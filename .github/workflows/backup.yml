@@ -39,7 +39,7 @@ jobs:
       # Etapa 4: Executar script de backup
       - name: Executar script de backup
         env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+          REPOSITORY_ACCESS_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
         run: npx tsx scripts/backup.ts
 
       # Etapa 5: Commit e push dos backups

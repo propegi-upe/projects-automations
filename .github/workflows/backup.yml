@@ -3,42 +3,46 @@ name: Backup Diário de Tarefas
 
 # Eventos que disparam o workflow:
 on:
-# Agenda o backup para rodar automaticamente todos os dias Todos os dias às 03h UTC
+  # Agenda o backup para rodar automaticamente todos os dias às 03h UTC
   schedule:
-    - cron: '0 3 * * *' # formato: minuto hora dia_mes mês dia_semana
-  # Permite rodar manualmente pelo botão "Run workflow" no GitHub
-  workflow_dispatch: # Permite rodar manualmente
+    - cron: '0 3 * * *'
+  # Permite rodar manualmente pelo botão "Run workflow"
+  workflow_dispatch:
 
 # Permissões necessárias para o workflow
 permissions:
   contents: write # Permite fazer push (commit) no repositório
 
 jobs:
-  backup: # Nome do job (grupo de tarefas)
-    runs-on: ubuntu-latest # Runner (máquina virtual) usado
+  backup:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: automation # 👉 Define o diretório padrão para os comandos
 
     steps:
-      # Etapa 1: Fazer checkout do código do repositório
+      # Etapa 1: Fazer checkout do código
       - name: Checkout do repositório
         uses: actions/checkout@v3
 
-      # Etapa 2: Configurar Node.js na versão 20
+      # Etapa 2: Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      # Etapa 3: Instalar dependências do projeto
+      # Etapa 3: Instalar dependências na pasta automation
       - name: Instalar dependências
         run: npm install
 
-      # Etapa 4: Executar o script TypeScript que faz o backup
+      # Etapa 4: Executar script de backup
       - name: Executar script de backup
         env:
           GITHUB_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
-        run: npx tsx automation/scripts/backup.ts
+        run: npx tsx scripts/backup.ts
 
-      # Etapa 5: Fazer commit e push dos arquivos gerados na pasta backups/
+      # Etapa 5: Commit e push dos backups
       - name: Commit e push dos backups
         run: |
           git config user.name "github-actions"

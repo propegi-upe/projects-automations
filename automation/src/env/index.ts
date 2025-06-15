@@ -2,7 +2,7 @@ import "dotenv/config"
 import { z } from "zod"
 
 const envSchema = z.object({
-  GITHUB_TOKEN: z.string(),
+  REPOSITORY_ACCESS_TOKEN: z.string(),
 })
 
 const _env = envSchema.safeParse(process.env)

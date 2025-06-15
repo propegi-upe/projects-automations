@@ -64,7 +64,7 @@ export class GitHubProjectsDTService {
   const response = await fetch("https://api.github.com/graphql", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+      Authorization: `Bearer ${env.REPOSITORY_ACCESS_TOKEN}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ query }),
@@ -192,7 +192,7 @@ export class GitHubProjectsDTService {
     const response = await fetch("https://api.github.com/graphql", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        Authorization: `Bearer ${env.REPOSITORY_ACCESS_TOKEN}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ query }),

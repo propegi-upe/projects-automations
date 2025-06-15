@@ -1,5 +1,5 @@
-import { FieldSchema, parseFieldValues } from "@/field-parser/field-parser" 
-import { env } from "@/env"
+import { FieldSchema, parseFieldValues } from "../field-parser/field-parser"
+import { env } from "../env"
 
 export class ProjectsService {
   async getGroupedTasksFromProject(projectId: string, schema?: FieldSchema) {

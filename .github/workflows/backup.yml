@@ -16,9 +16,6 @@ permissions:
 jobs:
   backup: # Nome do job (grupo de tarefas)
     runs-on: ubuntu-latest # Runner (máquina virtual) usado
-    
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_BACKUP }}
 
     steps:
       # Etapa 1: Fazer checkout do código do repositório
@@ -37,6 +34,8 @@ jobs:
 
       # Etapa 4: Executar o script TypeScript que faz o backup
       - name: Executar script de backup
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
         run: npx tsx automation/scripts/backup.ts
 
       # Etapa 5: Fazer commit e push dos arquivos gerados na pasta backups/

@@ -154,7 +154,7 @@ export class GitHubProjectsService {
     const response = await fetch("https://api.github.com/graphql", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ query }),
@@ -183,5 +183,184 @@ export class GitHubProjectsService {
       url: item.content?.url ?? null,
       statusOptionId,
     }))
+  }
+
+  async listAllTasksProjectOrg(projectId: string) {
+    const query = `
+        query {
+    node(id: "${projectId}") {
+        ... on ProjectV2 {
+        items(first: 100) {
+            nodes {
+            id
+            content {
+                ... on Issue {
+                title
+                number
+                url
+                }
+                ... on PullRequest {
+                title
+                number
+                url
+                }
+                ... on DraftIssue {
+                title
+                body
+                }
+            }
+            fieldValues(first: 20) {
+                nodes {
+                ... on ProjectV2ItemFieldSingleSelectValue {
+                    optionId
+                    name
+                    field {
+                    ... on ProjectV2SingleSelectField {
+                        name
+                    }
+                    }
+                }
+                ... on ProjectV2ItemFieldIterationValue {
+                  iterationId
+                  title
+                  field {
+                    ... on ProjectV2IterationField {
+                      name
+                    }
+                  }
+                }
+                }
+
+            }
+            }
+        }
+        }
+    }
+    }
+    `
+
+    const response = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
+    })
+
+    const json = await response.json()
+
+    if (json.errors) {
+      console.error(json.errors)
+      throw new Error("Erro ao buscar tarefas.")
+    }
+
+    const items = json.data.node.items.nodes
+
+    const groupedTasks: Record<string, any[]> = {}
+
+    for (const item of items) {
+      const fieldValue = (fieldName: string) =>
+        item.fieldValues.nodes.find((f: any) => f?.field?.name === fieldName) ??
+        {}
+
+      const task = {
+        id: item.id,
+        title: item.content?.title ?? "Sem título",
+        body: item.content?.body ?? null,
+        url: item.content?.url ?? null,
+        status: fieldValue("Status").name ?? null,
+        statusOptionId: fieldValue("Status").optionId ?? null,
+        side: fieldValue("Side").name ?? null,
+        project: fieldValue("Projeto").name ?? null,
+        issueType: fieldValue("Issue Type").name ?? null,
+        priority: fieldValue("Priority").name ?? null,
+        storyPoints: fieldValue("Story Points").name ?? null,
+        iteration: fieldValue("Iteration").title ?? null,
+        iterationId: fieldValue("Iteration").iterationId ?? null,
+      }
+
+      const statusGroup = task.status ?? "Sem status"
+      if (!groupedTasks[statusGroup]) {
+        groupedTasks[statusGroup] = []
+      }
+
+      groupedTasks[statusGroup].push(task)
+    }
+
+    return groupedTasks
+  }
+
+  async listAllTasksProjectRaw(projectId: string) {
+    const query = `
+        query {
+    node(id: "${projectId}") {
+        ... on ProjectV2 {
+        items(first: 100) {
+            nodes {
+            id
+            content {
+                ... on Issue {
+                title
+                number
+                url
+                }
+                ... on PullRequest {
+                title
+                number
+                url
+                }
+                ... on DraftIssue {
+                title
+                body
+                }
+            }
+            fieldValues(first: 20) {
+                nodes {
+                ... on ProjectV2ItemFieldSingleSelectValue {
+                    optionId
+                    name
+                    field {
+                    ... on ProjectV2SingleSelectField {
+                        name
+                    }
+                    }
+                }
+                ... on ProjectV2ItemFieldIterationValue {
+                  iterationId
+                  title
+                  field {
+                    ... on ProjectV2IterationField {
+                      name
+                    }
+                  }
+                }
+                }
+
+            }
+            }
+        }
+        }
+    }
+    }
+    `
+
+    const response = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.GITHUB_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query }),
+    })
+
+    const json = await response.json()
+
+    if (json.errors) {
+      console.error(json.errors)
+      throw new Error("Erro ao buscar tarefas.")
+    }
+
+    return json.data.node.items.nodes
   }
 }

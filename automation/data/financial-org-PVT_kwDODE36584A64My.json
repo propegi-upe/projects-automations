@@ -1,0 +1,23 @@
+{
+  "Liquidada": [
+    {
+      "id": "PVTI_lADODE36584A64MyzgbOZVk",
+      "title": "Bolsa a pesquisador - Diagnóstico",
+      "url": null,
+      "body": "",
+      "status": "Liquidada",
+      "statusOptionId": "47fc9ee4",
+      "intervenienciaIAUPE": "Fevereiro",
+      "convenioOuAcordo": null,
+      "edital": "Plano de Trabalho",
+      "editalOptionId": "58d804a7",
+      "acordoNumero": null,
+      "aditivoNumero": null,
+      "tipoAditivo": null,
+      "empresa": null,
+      "cnpj": null,
+      "coordenador": null,
+      "email": null
+    }
+  ]
+}

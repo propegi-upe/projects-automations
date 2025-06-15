@@ -6,6 +6,7 @@ on:
   # Agenda o backup para rodar automaticamente todos os dias às 03h UTC
   schedule:
     - cron: '0 3 * * *'
+    - cron: '0 18 * * *'
   # Permite rodar manualmente pelo botão "Run workflow"
   workflow_dispatch:
 

@@ -1,0 +1,46 @@
+# Nome do workflow (aparece no GitHub Actions)
+name: Backup Diário de Tarefas
+
+# Eventos que disparam o workflow:
+on:
+# Agenda o backup para rodar automaticamente todos os dias Todos os dias às 00h UTC
+  schedule:
+    - cron: '15 16 * * *' # formato: minuto hora dia_mes mês dia_semana
+  # Permite rodar manualmente pelo botão "Run workflow" no GitHub
+  workflow_dispatch: # Permite rodar manualmente
+
+# Permissões necessárias para o workflow
+permissions:
+  contents: write # Permite fazer push (commit) no repositório
+
+jobs:
+  backup: # Nome do job (grupo de tarefas)
+    runs-on: ubuntu-latest # Runner (máquina virtual) usado
+
+    steps:
+      # Etapa 1: Fazer checkout do código do repositório
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      # Etapa 2: Configurar Node.js na versão 20
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Etapa 3: Instalar dependências do projeto
+      - name: Instalar dependências
+        run: npm install
+
+      # Etapa 4: Executar o script TypeScript que faz o backup
+      - name: Executar script de backup
+        run: npx tsx scripts/backup.ts
+
+      # Etapa 5: Fazer commit e push dos arquivos gerados na pasta backups/
+      - name: Commit e push dos backups
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add data/backups/
+          git commit -m "Backup diário: $(date +'%Y-%m-%d')" || echo "Nenhuma mudança para commitar"
+          git push

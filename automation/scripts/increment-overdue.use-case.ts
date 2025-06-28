@@ -31,12 +31,14 @@ async function incrementOverdueTasks() {
   console.log(`Encontradas ${overdueTasks.length} tarefas em atraso`);
 
   for (const task of overdueTasks as Record<string, any>[]) {
-    const dias = parseInt(task.diasEmAtraso) || 0;
-    const novoValor = dias + 1;
+    const days = parseInt(task.diasEmAtraso) || 0
+    const newValue = days + 1
 
-    console.log(`Atualizando tarefa ${task.title} de ${dias} para ${novoValor} dias em atraso`);
+    console.log(
+      `Atualizando tarefa ${task.title} de ${days} para ${newValue} dias em atraso`
+    )
 
-    await updateTaskField(task.id, novoValor.toString());
+    await updateTaskField(task.id, newValue.toString())
   }
 
   console.log("Atualização concluída.");

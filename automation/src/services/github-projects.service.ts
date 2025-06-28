@@ -1,11 +1,4 @@
 import { env } from "@/env"
-import { exec } from "child_process" //módulo nativo do Node.js que permite **executar comandos no terminal** como se você estivesse digitando no shell.
-import { promisify } from "util" // transforma funções de **callback** em funções que retornam **Promise**, tornando mais fácil usar com `async/await`.
-
-//Converte exec para execAsync, permitindo que possamos usar:
-// const { stdout } = await execAsync('algum comando');
-// Sem precisar lidar com callbacks (mais limpo e moderno)
-const execAsync = promisify(exec)
 
 export class GitHubProjectsService {
   //método assíncrono que recebe o nome da organização (`org`), como por exemplo "propegi-upe"
@@ -56,7 +49,7 @@ export class GitHubProjectsService {
     query {
       node(id: "${projectId}") {
         ... on ProjectV2 {
-          fields(first: 20) {
+          fields(first: 100) {
             nodes {
               ... on ProjectV2Field {
                 id
@@ -176,13 +169,6 @@ export class GitHubProjectsService {
     )
 
     return filtered
-
-    return filtered.map((item: any) => ({
-      id: item.id,
-      title: item.content?.title ?? "Sem título",
-      url: item.content?.url ?? null,
-      statusOptionId,
-    }))
   }
 
   async listAllTasksProjectOrg(projectId: string) {

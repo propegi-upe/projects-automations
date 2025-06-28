@@ -2,16 +2,16 @@ import { FastifyInstance } from "fastify"
 
 import { saveJsonFile } from "@/utils/save-json-file"
 
-import { listAllTasksDTProjectOrgUseCase } from "@/use-cases/dt/list-all-tasks-dt-project-org"
-import { listAllTasksDTProjectRawUseCase } from "@/use-cases/dt/list-all-tasks-dt-project-raw"
+import { getAllTasksDTProjectOrgUseCase } from "@/use-cases/use-cases/dt/list-all-tasks-dt-project-org"
+import { getAllTasksDTProjectRawUseCase } from "@/use-cases/use-cases/dt/list-all-tasks-dt-project-raw"
 
-export default async function projectsRoutesDT(app: FastifyInstance) {
+export default async function routesDT(app: FastifyInstance) {
   
-  app.get("/projects/dt/org/:projectId", async (request, reply) => {
+  app.get("/dt/org/:projectId", async (request, reply) => {
     const { projectId } = request.params as { projectId: string }
 
     try {
-      const data = await listAllTasksDTProjectOrgUseCase(projectId)
+      const data = await getAllTasksDTProjectOrgUseCase(projectId)
       await saveJsonFile(data, `dt-org-${projectId}`)
 
       return reply.send(data)
@@ -23,10 +23,10 @@ export default async function projectsRoutesDT(app: FastifyInstance) {
     }
   })
 
-  app.get("/projects/dt/raw/:projectId", async (request, reply) => {
+  app.get("/dt/raw/:projectId", async (request, reply) => {
   const { projectId } = request.params as { projectId: string }
   try {
-    const columns = await listAllTasksDTProjectRawUseCase(projectId)
+    const columns = await getAllTasksDTProjectRawUseCase(projectId)
 
     await saveJsonFile(columns, `dt-raw-${projectId}`)
 

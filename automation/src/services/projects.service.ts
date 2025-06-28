@@ -32,25 +32,29 @@ export class ProjectsService {
                       optionId
                       name
                       field {
-                        ... on ProjectV2SingleSelectField {
-                          name
-                        }
+                        id
+                        name
                       }
                     }
                     ... on ProjectV2ItemFieldTextValue {
                       text
                       field {
-                        ... on ProjectV2Field {
-                          name
-                        }
+                        id
+                        name
                       }
                     }
                     ... on ProjectV2ItemFieldDateValue {
                       date
                       field {
-                        ... on ProjectV2Field {
-                          name
-                        }
+                        id
+                        name
+                      }
+                    }
+                    ... on ProjectV2ItemFieldNumberValue {
+                      number
+                      field {
+                        id
+                        name
                       }
                     }
                   }

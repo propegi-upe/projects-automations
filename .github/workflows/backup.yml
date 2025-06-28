@@ -40,7 +40,7 @@ jobs:
       - name: Executar script de backup
         env:
           REPOSITORY_ACCESS_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
-        run: npx tsx scripts/backup.ts
+        run: npx tsx scripts/backup.use-case.ts
 
       # Etapa 5: Commit e push dos backups
       - name: Commit e push dos backups

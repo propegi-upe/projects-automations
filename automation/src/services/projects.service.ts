@@ -5,63 +5,52 @@ export class ProjectsService {
   async getGroupedTasksFromProject(projectId: string, schema?: FieldSchema) {
    const query = `
     query {
-      node(id: "${projectId}") {
-        ... on ProjectV2 {
-          items(first: 100) {
-            nodes {
-              id
-              content {
-                ... on Issue {
-                  title
-                  number
-                  url
-                }
-                ... on PullRequest {
-                  title
-                  number
-                  url
-                }
-                ... on DraftIssue {
-                  title
-                  body
-                }
-              }
-              fieldValues(first: 30) {
-                nodes {
-                  ... on ProjectV2ItemFieldSingleSelectValue {
-                    optionId
-                    name
-                    field {
-                      ... on ProjectV2FieldSingleSelect {
-                        id
-                        name
-                      }
-                    }
-                  }
-                  ... on ProjectV2ItemFieldTextValue {
-                    text
-                    field {
-                      ... on ProjectV2FieldText {
-                        id
-                        name
-                      }
-                    }
-                  }
-                  ... on ProjectV2ItemFieldDateValue {
-                    date
-                    field {
-                      ... on ProjectV2FieldDate {
-                        id
-                        name
-                      }
-                    }
-                  }
-                  ... on ProjectV2ItemFieldNumberValue {
+        node(id: "${projectId}") {
+          ... on ProjectV2 {
+            items(first: 100) {
+              nodes {
+                id
+                content {
+                  ... on Issue {
+                    title
                     number
-                    field {
-                      ... on ProjectV2FieldNumber {
-                        id
-                        name
+                    url
+                  }
+                  ... on PullRequest {
+                    title
+                    number
+                    url
+                  }
+                  ... on DraftIssue {
+                    title
+                    body
+                  }
+                }
+                fieldValues(first: 30) {
+                  nodes {
+                    ... on ProjectV2ItemFieldSingleSelectValue {
+                      optionId
+                      name
+                      field {
+                        ... on ProjectV2SingleSelectField {
+                          name
+                        }
+                      }
+                    }
+                    ... on ProjectV2ItemFieldTextValue {
+                      text
+                      field {
+                        ... on ProjectV2Field {
+                          name
+                        }
+                      }
+                    }
+                    ... on ProjectV2ItemFieldDateValue {
+                      date
+                      field {
+                        ... on ProjectV2Field {
+                          name
+                        }
                       }
                     }
                   }
@@ -71,8 +60,7 @@ export class ProjectsService {
           }
         }
       }
-    }
-  `
+    `
 
 
     const response = await fetch("https://api.github.com/graphql", {

@@ -1,9 +1,9 @@
 import { FastifyInstance } from "fastify"
 import { listProjectsUseCase } from "../use-cases/fetch-projects.use-case"
-import { listProjectsColumnsUseCase } from "@/use-cases/fetch-attributes-projetcs"
-import { llistTasksByStatusUseCase } from "@/use-cases/fetch-tasks-by-status"
-import { llistAllTasksProjectOrgUseCase } from "@/use-cases/fetch-all-tasks-project-org"
-import { llistAllTasksProjectRawUseCase } from "@/use-cases/fetch-all-tasks-project-raw"
+import { listProjectsColumnsUseCase } from "@/use-cases/fetch-attributes-projetcs.use-case"
+import { llistTasksByStatusUseCase } from "@/use-cases/fetch-tasks-by-status.use-case"
+import { llistAllTasksProjectOrgUseCase } from "@/use-cases/fetch-all-tasks-project-org.use-case"
+import { llistAllTasksProjectRawUseCase } from "@/use-cases/fetch-all-tasks-project-raw.use-case"
 import { saveJsonFile } from "@/utils/save-json-file"
 
 export async function projectsRoutes(app: FastifyInstance) {

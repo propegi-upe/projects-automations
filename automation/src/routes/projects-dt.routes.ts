@@ -2,8 +2,8 @@ import { FastifyInstance } from "fastify"
 
 import { saveJsonFile } from "@/utils/save-json-file"
 
-import { getAllTasksDTProjectOrgUseCase } from "@/use-cases/dt/fetch-all-tasks-dt-project-org"
-import { getAllTasksDTProjectRawUseCase } from "@/use-cases/dt/fetch-all-tasks-dt-project-raw"
+import { getAllTasksDTProjectOrgUseCase } from "@/use-cases/dt/fetch-all-tasks-dt-project-org.use-case"
+import { getAllTasksDTProjectRawUseCase } from "@/use-cases/dt/fetch-all-tasks-dt-project-raw.use-case"
 
 export default async function routesDT(app: FastifyInstance) {
   

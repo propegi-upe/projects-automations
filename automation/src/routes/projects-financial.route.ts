@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify"
 
 import { saveJsonFile } from "@/utils/save-json-file"
-import { getAllTasksFinancialProjectOrgUseCase } from "@/use-cases/use-cases/financial/list-all-tasks-financial-project-org"
-import { getAllTasksFinancialProjectRawUseCase } from "@/use-cases/use-cases/financial/list-all-tasks-financial-project-raw"
+import { getAllTasksFinancialProjectOrgUseCase } from "@/use-cases/financial/fetch-all-tasks-financial-project-org"
+import { getAllTasksFinancialProjectRawUseCase } from "@/use-cases/financial/fetch-all-tasks-financial-project-raw"
 
 export default async function routesFinancial(app: FastifyInstance) {
   

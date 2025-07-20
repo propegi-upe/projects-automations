@@ -4,6 +4,7 @@
   "description": "A sample package.json",
   "dependencies": {
     "@primer/css": "17.0.1",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.5.0"
   },
   "license": "MIT"

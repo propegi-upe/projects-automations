@@ -117,7 +117,10 @@ export class ProjectsService {
 
     return allTasks.map((task: any) => ({
       ...task,
-      status: task.status ?? this.getSingleSelectValue(task, 'Status') ?? 'Sem status',
+      status:
+        task.status ??
+        this.getSingleSelectValue(task, "Status") ??
+        "Sem status",
     }))
   }
 
@@ -131,30 +134,32 @@ export class ProjectsService {
 
   //Retorna o valor de um campo Date
   getDateValue(item: any, fieldName: string): string | null {
-  const field = item.fieldValues.nodes.find(
-    (f: any) => f.field?.name === fieldName && f.date !== undefined
-  )
-  return field?.date ?? null
-}
-
-private statusOptionIds: Record<string, string> = {
-  'Folhas em Preparação': 'f75ad846',
-  'Em Atraso de Empenho': '2123d802',
-  'Empenhada': '61e4505c',
-  'Em Atraso de Liquidação': 'e67a2e5f',
-  'Liquidade': '47fc9ee4',
-  'OB Emitida': '98236657',
-  'Em Atraso de PD': '73d00594',
-}
-private statusFieldId = 'FIELD_ID_DO_STATUS'
-async updateStatusOfItem(itemId: string, newStatus: string): Promise<void> {
-  const optionId = this.statusOptionIds[newStatus]
-  if (!optionId) {
-    console.warn(`Option ID não encontrado para status: ${newStatus}`)
-    return
+    const field = item.fieldValues.nodes.find(
+      (f: any) => f.field?.name === fieldName && f.date !== undefined
+    )
+    return field?.date ?? null
   }
 
-  const mutation = `
+  private statusOptionIds: Record<string, string> = {
+    "Folhas em Preparação": "f75ad846",
+    "Em Atraso de Empenho": "2123d802",
+    Empenhada: "61e4505c",
+    "Em Atraso de Liquidação": "e67a2e5f",
+    Liquidada: "47fc9ee4",
+    "OB Emitida": "98236657",
+    "Em Atraso de PD": "73d00594",
+  }
+
+  private statusFieldId = "PVTSSF_lADODE36584A8ZDOzgwZ5bI"
+
+  async updateStatusOfItem(itemId: string, newStatus: string): Promise<void> {
+    const optionId = this.statusOptionIds[newStatus]
+    if (!optionId) {
+      console.warn(`Option ID não encontrado para status: ${newStatus}`)
+      return
+    }
+
+    const mutation = `
     mutation {
       updateProjectV2ItemFieldValue(
         input: {
@@ -173,19 +178,19 @@ async updateStatusOfItem(itemId: string, newStatus: string): Promise<void> {
     }
   `
 
-  const response = await fetch("https://api.github.com/graphql", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${env.REPOSITORY_ACCESS_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ query: mutation }),
-  })
+    const response = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.REPOSITORY_ACCESS_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query: mutation }),
+    })
 
-  const json = await response.json()
-  if (json.errors) {
-    console.error(json.errors)
-    throw new Error('Erro ao atualizar status do item.')
+    const json = await response.json()
+    if (json.errors) {
+      console.error(json.errors)
+      throw new Error("Erro ao atualizar status do item.")
+    }
   }
-}
 }

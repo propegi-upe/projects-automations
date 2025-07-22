@@ -8,8 +8,8 @@
     "fieldValues": {
       "nodes": [
         {
-          "optionId": "0dee7f3d",
-          "name": "Backlog",
+          "optionId": "deeb62cf",
+          "name": "Finalizado ✅",
           "field": {
             "name": "Status"
           }

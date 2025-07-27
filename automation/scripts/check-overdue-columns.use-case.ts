@@ -28,6 +28,9 @@ async function main() {
   const projectService = new ProjectsService()
   const cardsByStatus = await projectService.getGroupedTasksFromProject(BOARD_ID)
 
+  console.log("Print do cardsByStatus")
+  console.log(cardsByStatus)
+
   // Colapsa todos os cards num único array para processamento
   const allCards = Object.values(cardsByStatus).flat() as any[]
 

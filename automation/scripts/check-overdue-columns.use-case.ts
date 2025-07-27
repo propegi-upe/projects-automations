@@ -29,7 +29,10 @@ async function main() {
   const cardsByStatus = await projectService.getGroupedTasksFromProject(BOARD_ID)
 
   // Colapsa todos os cards num único array para processamento
-  const allCards = Object.values(cardsByStatus).flat() as any[] // 👈 força tipagem como array de objetos
+  const allCards = Object.values(cardsByStatus).flat() as any[]
+
+  console.log("Print do allCards")
+  console.log(allCards)
 
   for (const card of allCards) {
     const status = (card.status ?? projectService.getSingleSelectValue(card, 'Status')) ?? 'Sem status'

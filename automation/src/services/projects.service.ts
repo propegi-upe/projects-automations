@@ -110,20 +110,6 @@ export class ProjectsService {
     return groupedTasks
   }
 
-  async getAllTasksWithStatus(projectId: string) {
-    const items = await this.getGroupedTasksFromProject(projectId)
-
-    const allTasks = Object.values(items).flat()
-
-    return allTasks.map((task: any) => ({
-      ...task,
-      status:
-        task.status ??
-        this.getSingleSelectValue(task, "Status") ??
-        "Sem status",
-    }))
-  }
-
   // Retorna o valor de um campo SingleSelect com base no nome do campo
   getSingleSelectValue(item: any, fieldName: string): string | null {
     const field = item.fieldValues.nodes.find(

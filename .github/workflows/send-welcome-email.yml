@@ -1,0 +1,39 @@
+name: Enviar Email de Boas-Vindas
+
+on:
+  schedule:
+    - cron: '0 16 * * *'  
+  workflow_dispatch:      
+
+permissions:
+  contents: read
+
+jobs:
+  send-welcome-email:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: emails  
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Enviar email de boas-vindas
+        env:
+          SMTP_HOST: smtp.gmail.com
+          SMTP_PORT: 587
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          SMTP_SECURE: false
+          DEFAULT_EMAIL_FROM: ${{ secrets.DEFAULT_EMAIL_FROM }}
+        run: npx ts-node -r dotenv/config -r tsconfig-paths/register src/scripts/main.ts

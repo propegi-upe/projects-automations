@@ -13,13 +13,13 @@ const overdueRules = [
   },
   {
     name: "Atraso de Liquidação",
-    currentStatuses: ["Empenhada", "Em Atraso de Empenho"],
+    currentStatuses: ["Empenhada"],
     dueDateField: "Data limite para liquidação",
     targetStatus: "Em Atraso de Liquidação",
   },
   {
     name: "Atraso de PD",
-    currentStatuses: ["Liquidada", "Em Atraso de Liquidação", "OB Emitida"],
+    currentStatuses: ["Liquidada"],
     dueDateField: "Data limite de PD",
     targetStatus: "Em Atraso de PD",
   },

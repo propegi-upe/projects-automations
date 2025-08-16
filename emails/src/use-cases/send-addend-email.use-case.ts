@@ -1,37 +1,47 @@
 import { EmailsService } from "@/services/emails-service" 
 import { Email } from "@/entities/email" 
 
-interface SendAditivoEmailRequest {
+interface SendAddendumEmailRequest {
   to: string
-  nomeProjeto: string
-  nomeCoordenador: string
-  nomeEmpresa: string
+  projectName: string
+  coordinatorName: string
+  companyName: string
 }
 
-export class SendAditivoEmailUseCase {
+export class SendAddendumEmailUseCase {
   constructor(private emailsService: EmailsService) {}
 
-  async execute({to, nomeProjeto, nomeCoordenador, nomeEmpresa}: SendAditivoEmailRequest) {
-    const { subject, html } = this.gerarEmailAditivo({nomeProjeto, nomeCoordenador, nomeEmpresa})
+  async execute({
+    to,
+    projectName,
+    coordinatorName,
+    companyName,
+  }: SendAddendumEmailRequest) {
+    const { subject, html } = this.generateAddendumEmail({
+      projectName,
+      coordinatorName,
+      companyName,
+    })
+
     const email = Email.create({ to, subject, html })
     await this.emailsService.send(email)
   }
 
-  gerarEmailAditivo({
-    nomeProjeto,
-    nomeCoordenador,
-    nomeEmpresa,
-    }: {
-    nomeProjeto: string
-    nomeCoordenador: string
-    nomeEmpresa: string
-    }) {
-    const subject = `🔔 [Projeto a Vencer] ${nomeProjeto} - Aditivo de Prorrogação de Prazo`
+  private generateAddendumEmail({
+    projectName,
+    coordinatorName,
+    companyName,
+  }: {
+    projectName: string
+    coordinatorName: string
+    companyName: string
+  }) {
+    const subject = `🔔 [Projeto a Vencer] ${projectName} - Aditivo de Prorrogação de Prazo`
 
     const html = `
-        <p>Prezado(a) ${nomeCoordenador},</p>
+        <p>Prezado(a) ${coordinatorName},</p>
 
-        <p>Informamos que o projeto <strong>${nomeProjeto}</strong>, desenvolvido em parceria com a empresa <strong>${nomeEmpresa}</strong> e sob sua coordenação, está próximo do vencimento, conforme o cronograma estabelecido.</p>
+        <p>Informamos que o projeto <strong>${projectName}</strong>, desenvolvido em parceria com a empresa <strong>${companyName}</strong> e sob sua coordenação, está próximo do vencimento, conforme o cronograma estabelecido.</p>
 
         <p>Gostaríamos de saber se há interesse em realizar um <strong>aditivo de prorrogação de prazo 📄🖊️</strong>.</p>
 
@@ -47,5 +57,5 @@ export class SendAditivoEmailUseCase {
     `
 
     return { subject, html }
-    }
+  }
 }

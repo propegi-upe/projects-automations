@@ -1,37 +1,47 @@
 import { EmailsService } from "@/services/emails-service" 
 import { Email } from "@/entities/email" 
 
-interface SendEncerramentoEmailRequest {
+interface SendClosureEmailRequest {
   to: string
-  nomeProjeto: string
-  nomeEmpresa: string
-  nomeProfessor: string
+  projectName: string
+  companyName: string
+  professorName: string
 }
 
-export class SendEncerramentoEmailUseCase {
+export class SendClosureEmailUseCase {
   constructor(private emailsService: EmailsService) {}
 
-    async execute({to, nomeProjeto, nomeEmpresa, nomeProfessor}: SendEncerramentoEmailRequest) {
-    const { subject, html } = this.gerarEmailEncerramento({nomeProjeto, nomeEmpresa, nomeProfessor})
+  async execute({
+    to,
+    projectName,
+    companyName,
+    professorName,
+  }: SendClosureEmailRequest) {
+    const { subject, html } = this.generateClosureEmail({
+      projectName,
+      companyName,
+      professorName,
+    })
+
     const email = Email.create({ to, subject, html })
     await this.emailsService.send(email)
   }
 
-    gerarEmailEncerramento({
-    nomeProjeto,
-    nomeEmpresa,
-    nomeProfessor,
-    }: {
-    nomeProjeto: string
-    nomeEmpresa: string
-    nomeProfessor: string
-    }) {
-    const subject = `✅ [Projeto Finalizado] Solicitação de Informações Finais - ${nomeProjeto}`
+  private generateClosureEmail({
+    projectName,
+    companyName,
+    professorName,
+  }: {
+    projectName: string
+    companyName: string
+    professorName: string
+  }) {
+    const subject = `✅ [Projeto Finalizado] Solicitação de Informações Finais - ${projectName}`
 
     const html = `
-        <p>Prezado prof. <strong>${nomeProfessor}</strong>,</p>
+        <p>Prezado prof. <strong>${professorName}</strong>,</p>
 
-        <p>Informamos que o projeto <strong>${nomeProjeto}</strong>, desenvolvido em parceria com a empresa <strong>${nomeEmpresa}</strong> e sob sua coordenação, foi concluído com sucesso 🎉.</p>
+        <p>Informamos que o projeto <strong>${projectName}</strong>, desenvolvido em parceria com a empresa <strong>${companyName}</strong> e sob sua coordenação, foi concluído com sucesso 🎉.</p>
 
         <p>Com o objetivo de aprimorar a gestão e o acompanhamento dos projetos, solicitamos a gentileza que:</p>
         <ol>
@@ -49,6 +59,5 @@ export class SendEncerramentoEmailUseCase {
     `
 
     return { subject, html }
-    }
-
+  }
 }

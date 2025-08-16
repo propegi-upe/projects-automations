@@ -1,4 +1,4 @@
-import { ProjectsService } from '@/services/projects.service'
+import { CheckOverduePayrollsUseCase } from "@/use-cases/check-overdue-payrolls/check-overdue-payrolls.use-case"
 import { formatISO } from "date-fns"
 import dayjs from "dayjs"
 
@@ -30,17 +30,23 @@ function isDateOverdue(dateStr: string): boolean {
 }
 
 async function main() {
-  const projectService = new ProjectsService()
-  const allCards = await projectService.getGroupedTasksFromProject(BOARD_ID)
+  const checkOverduePayrollsUseCase = new CheckOverduePayrollsUseCase()
+  const allCards = await checkOverduePayrollsUseCase.getGroupedTasksFromProject(
+    BOARD_ID
+  )
 
   for (const card of allCards) {
     const status =
-      projectService.getSingleSelectValue(card, "Status") ?? "Sem status"
+      checkOverduePayrollsUseCase.getSingleSelectValue(card, "Status") ??
+      "Sem status"
 
     for (const rule of overdueRules) {
       if (!rule.currentStatuses.includes(status)) continue
 
-      const dueDateStr = projectService.getDateValue(card, rule.dueDateField)
+      const dueDateStr = checkOverduePayrollsUseCase.getDateValue(
+        card,
+        rule.dueDateField
+      )
       if (!dueDateStr) continue
 
       if (isDateOverdue(dueDateStr) && status !== rule.targetStatus) {
@@ -55,7 +61,10 @@ async function main() {
           )}`
         )
 
-        await projectService.updateStatusOfItem(card.id, rule.targetStatus)
+        await checkOverduePayrollsUseCase.updateStatusOfItem(
+          card.id,
+          rule.targetStatus
+        )
 
         // Atualiza o status após a mudança para regras futuras
         card.status = rule.targetStatus
@@ -66,5 +75,5 @@ async function main() {
 }
 
 main().catch((e) => {
-  console.error('Erro ao executar o script:', e)
+  console.error("Erro ao executar o script:", e)
 })

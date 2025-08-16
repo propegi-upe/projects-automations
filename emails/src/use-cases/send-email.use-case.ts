@@ -1,5 +1,5 @@
-import { EmailsService } from "@/services/emails-service" 
-import { Email } from "@/entities/email" 
+import { Email } from "@/entities/email"
+import { EmailsService } from "@/services/email-service/emails-service"
 
 interface SendEmailRequest {
   to: string

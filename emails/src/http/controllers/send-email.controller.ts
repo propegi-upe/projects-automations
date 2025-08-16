@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { SendEmailUseCase } from "@/use-cases/send-email.use-case"; 
-import { NodemailerEmailService } from "@/services/implementation/nodemailer-email-service"; 
+import { NodemailerEmailService } from "@/services/email-service/implementations/nodemailer-email-service" 
 
 export async function sendEmailController(
   request: FastifyRequest<{ Body: { to: string; subject: string; text?: string; html?: string } }>,

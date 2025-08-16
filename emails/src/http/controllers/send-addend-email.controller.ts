@@ -1,7 +1,11 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
-import { NodemailerEmailService } from '@/services/implementation/nodemailer-email-service'
-import { SendAddendumEmailUseCase } from "@/use-cases/send-addend-email.use-case"
+import { NodemailerEmailService } from "@/services/email-service/implementations/nodemailer-email-service"
+import {
+  SendAddendumEmailRequest,
+  SendAddendumEmailUseCase,
+} from "@/use-cases/send-addend-email.use-case"
+import { HandlebarsHtmlCompiler } from "@/services/email-service/implementations/handlebars-html-compiler"
 
 const bodySchema = z.object({
   to: z.string(),
@@ -15,7 +19,8 @@ export const sendAddendumEmailController = async (
   reply: FastifyReply
 ) => {
   const service = new NodemailerEmailService()
-  const emailAddendum = new SendAddendumEmailUseCase(service)
+  const htmlCompiler = new HandlebarsHtmlCompiler<SendAddendumEmailRequest>()
+  const emailAddendum = new SendAddendumEmailUseCase(service, htmlCompiler)
 
   const { to, projectName, coordinatorName, companyName } = bodySchema.parse(
     request.body

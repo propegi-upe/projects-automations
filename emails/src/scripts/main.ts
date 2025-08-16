@@ -1,4 +1,4 @@
-import { NodemailerEmailService } from "@/services/implementation/nodemailer-email-service"
+import { NodemailerEmailService } from "@/services/email-service/implementations/nodemailer-email-service"
 import { SendEmailUseCase } from "@/use-cases/send-email.use-case"
 import "dotenv/config"
 
@@ -9,8 +9,8 @@ const emailData = {
 }
 
 async function main() {
-    const service = new NodemailerEmailService()
-    const useCase = new SendEmailUseCase(service)
+  const service = new NodemailerEmailService()
+  const useCase = new SendEmailUseCase(service)
 
   try {
     await useCase.execute(emailData)

@@ -21,7 +21,7 @@ async function main() {
     const status = checkOverdueProjectsUseCase.getSingleSelectValue(card, "Status") ?? "Sem status"
 
     // só interessa quando está em andamento
-    if (status !== "Em Andamento") continue
+    if (status !== "Em Andamento 🔄") continue
 
     // pega a data de término
     const endDateStr = checkOverdueProjectsUseCase.getDateValue(

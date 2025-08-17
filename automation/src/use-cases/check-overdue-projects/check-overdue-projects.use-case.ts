@@ -1,7 +1,7 @@
 import { env } from '../../env'; 
 
-export class CheckOverdueProjectsUseCase  { 
-    async getGroupedTasksFromProject(projectId: string) {
+export class CheckOverdueProjectsUseCase {
+  async getGroupedTasksFromProject(projectId: string) {
     const query = `
     query {
         node(id: "${projectId}") {
@@ -80,34 +80,33 @@ export class CheckOverdueProjectsUseCase  {
     return json.data.node.items.nodes
   }
 
-    // Retorna o valor de um campo SingleSelect com base no nome do campo
-    getSingleSelectValue(item: any, fieldName: string): string | null {
-        const field = item.fieldValues.nodes.find(
-        (f: any) => f.field?.name === fieldName && f.name !== undefined
-        )
-        return field?.name ?? null
-    }
+  // Retorna o valor de um campo SingleSelect com base no nome do campo
+  getSingleSelectValue(item: any, fieldName: string): string | null {
+    const field = item.fieldValues.nodes.find(
+      (f: any) => f.field?.name === fieldName && f.name !== undefined
+    )
+    return field?.name ?? null
+  }
 
-    //Retorna o valor de um campo Date
-    getDateValue(item: any, fieldName: string): string | null {
-        const field = item.fieldValues.nodes.find(
-        (f: any) => f.field?.name === fieldName && f.date !== undefined
-        )
-        return field?.date ?? null
-    }
+  //Retorna o valor de um campo Date
+  getDateValue(item: any, fieldName: string): string | null {
+    const field = item.fieldValues.nodes.find(
+      (f: any) => f.field?.name === fieldName && f.date !== undefined
+    )
+    return field?.date ?? null
+  }
 
-    getTextValue(item: any, fieldName: string): string | null {
-        const field = item.fieldValues.nodes.find(
-            (f: any) => f.field?.name === fieldName && f.text !== undefined
-        )
-        return field?.text ?? null
-    }
+  getTextValue(item: any, fieldName: string): string | null {
+    const field = item.fieldValues.nodes.find(
+      (f: any) => f.field?.name === fieldName && f.text !== undefined
+    )
+    return field?.text ?? null
+  }
 
-
-    private statusOptionIds: Record<string, string> = {
-        "Em Andamento": "511501b7",
-        "A Vencer": "c9370880",
-    }
+  private statusOptionIds: Record<string, string> = {
+    "Em Andamento 🔄": "511501b7",
+    "A Vencer": "c9370880",
+  }
 
   private statusFieldId = "PVTSSF_lADODE36584A64MLzgvV8uc"
 

@@ -24,7 +24,10 @@ async function main() {
     if (status !== "Em Andamento") continue
 
     // pega a data de término
-    const endDateStr = checkOverdueProjectsUseCase.getDateValue(card, "Término")
+    const endDateStr = checkOverdueProjectsUseCase.getDateValue(
+      card,
+      "📅 Término"
+    )
     if (!endDateStr) continue
 
     const endDate = new Date(endDateStr)

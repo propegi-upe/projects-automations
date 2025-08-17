@@ -24,31 +24,42 @@ async function main() {
 
     const notificado = checkCompletedProjectsUseCase.getSingleSelectValue(card, "Notificado");
 
-    if (!notificado || notificado === "false"){
-        console.log(`Projeto ${card.title} ainda não notificado.`);
+    if (!notificado || notificado === "false") {
+      console.log(`Projeto ${card.content?.title} ainda não notificado.`)
 
-        const projectName = card.content?.title ?? "Projeto sem título"
+      const projectName = card.content?.title ?? "Projeto sem título"
 
-        const companyName = checkCompletedProjectsUseCase.getTextValue(card, "🏛️ Empresa") ?? "Empresa"
+      const companyName =
+        checkCompletedProjectsUseCase.getTextValue(card, "🏛️ Empresa") ??
+        "Empresa"
 
-        const professorName = checkCompletedProjectsUseCase.getTextValue(card, "👤 Coordenador") ?? "Coordenador"
-      
-        const emailDestino = checkCompletedProjectsUseCase.getTextValue(card, "✉️ E-mail")
+      const professorName =
+        checkCompletedProjectsUseCase.getTextValue(card, "👤 Coordenador") ??
+        "Coordenador"
 
-        if (emailDestino) {
+      const emailDestino = checkCompletedProjectsUseCase.getTextValue(
+        card,
+        "✉️ E-mail"
+      )
+
+      if (emailDestino) {
         await sendClosureEmailUseCase.execute({
           to: emailDestino,
           projectName,
           companyName,
           professorName,
         })
-            console.log(`Notificação de encerramento enviada para ${emailDestino}`)
-        } else {
-            console.warn(`Não foi possível enviar e-mail para ${projectName}, sem campo "✉️ E-mail"`)
-        }
+        console.log(`Notificação de encerramento enviada para ${emailDestino}`)
+      } else {
+        console.warn(
+          `Não foi possível enviar e-mail para ${projectName}, sem campo "✉️ E-mail"`
+        )
+      }
 
-        // Atualiza o campo "Notificado" para true
-        await checkCompletedProjectsUseCase.updateCardField(card.id);
+      // Atualiza o campo "Notificado" para true
+      await checkCompletedProjectsUseCase.updateCardField(card.id)
+    } else {
+      console.log("Card já enviado")
     }
   }
 }

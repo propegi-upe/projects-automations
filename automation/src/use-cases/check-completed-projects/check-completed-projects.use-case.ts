@@ -108,7 +108,7 @@ export class CheckCompletedProjectsUseCase  {
             itemId: "${itemId}"
             fieldId: "${this.statusFieldId}"
             value: {
-              singleSelectOptionId: "${optionId}"
+              text: "true"
             }
           }
         ) {

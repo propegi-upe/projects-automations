@@ -1,0 +1,240 @@
+[
+  {
+    "id": "PVTI_lADODE36584A64MLzgdtHQ0",
+    "content": {
+      "title": "Card para enviar email aditivo com projeto com 30 dias para vencer",
+      "body": ""
+    },
+    "fieldValues": {
+      "nodes": [
+        {},
+        {
+          "optionId": "c9370880",
+          "name": "A Vencer",
+          "field": {
+            "name": "Status"
+          }
+        },
+        {
+          "text": "Card para enviar email aditivo com projeto com 30 dias para vencer",
+          "field": {
+            "name": "Title"
+          }
+        },
+        {
+          "text": "Sistemas Bem Vivendo",
+          "field": {
+            "name": "🏛️ Empresa"
+          }
+        },
+        {
+          "text": "Eduardo",
+          "field": {
+            "name": "👤 Coordenador"
+          }
+        },
+        {
+          "text": "ejsilva159@gmail.com",
+          "field": {
+            "name": "✉️ E-mail"
+          }
+        },
+        {
+          "date": "2025-08-31",
+          "field": {
+            "name": "📅 Término"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "PVTI_lADODE36584A64MLzgbOY6w",
+    "content": {
+      "title": "Adicionar os atributos `setor` e `segmento` como campo de preenchimento no `card` do quadro",
+      "body": ""
+    },
+    "fieldValues": {
+      "nodes": [
+        {
+          "optionId": "deeb62cf",
+          "name": "Finalizado ✅",
+          "field": {
+            "name": "Status"
+          }
+        },
+        {
+          "text": "Adicionar os atributos `setor` e `segmento` como campo de preenchimento no `card` do quadro",
+          "field": {
+            "name": "Title"
+          }
+        },
+        {
+          "optionId": "2d850bb3",
+          "name": "Não",
+          "field": {
+            "name": "📁 Interveniência com o IAUPE"
+          }
+        },
+        {
+          "text": "teste",
+          "field": {
+            "name": "📢 Publicação"
+          }
+        },
+        {
+          "text": "Eduardo",
+          "field": {
+            "name": "👤 Coordenador"
+          }
+        },
+        {
+          "text": "ejsilva159@gmail.com",
+          "field": {
+            "name": "✉️ E-mail"
+          }
+        },
+        {
+          "text": "Sistemas Bem Vivendo",
+          "field": {
+            "name": "🏛️ Empresa"
+          }
+        },
+        {
+          "optionId": "035ff2e8",
+          "name": "true",
+          "field": {
+            "name": "Notificado"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "PVTI_lADODE36584A64MLzgbOY6s",
+    "content": {
+      "title": "Adicionar campo de resposta com escala TRE no `Formulário de Encerramento de Projeto`",
+      "body": ""
+    },
+    "fieldValues": {
+      "nodes": [
+        {
+          "optionId": "0dee7f3d",
+          "name": "Backlog",
+          "field": {
+            "name": "Status"
+          }
+        },
+        {
+          "text": "Adicionar campo de resposta com escala TRE no `Formulário de Encerramento de Projeto`",
+          "field": {
+            "name": "Title"
+          }
+        },
+        {
+          "date": "2025-08-18",
+          "field": {
+            "name": "📅 Término"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "PVTI_lADODE36584A64MLzgbOY6o",
+    "content": {
+      "title": "📧 Modelos de e-mail institucional",
+      "body": "https://silken-engineer-e1e.notion.site/Modelos-de-E-mail-Institucional-Projetos-1ce5d5b63b3a805cab6dcd3b5faf76dc?pvs=73 "
+    },
+    "fieldValues": {
+      "nodes": [
+        {
+          "optionId": "0dee7f3d",
+          "name": "Backlog",
+          "field": {
+            "name": "Status"
+          }
+        },
+        {
+          "text": "📧 Modelos de e-mail institucional",
+          "field": {
+            "name": "Title"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "PVTI_lADODE36584A64MLzgbOY6k",
+    "content": {
+      "title": "Mapear o prédio do IIT com suas salas e respectivos responsáveis",
+      "body": ""
+    },
+    "fieldValues": {
+      "nodes": [
+        {
+          "optionId": "0dee7f3d",
+          "name": "Backlog",
+          "field": {
+            "name": "Status"
+          }
+        },
+        {
+          "text": "Mapear o prédio do IIT com suas salas e respectivos responsáveis",
+          "field": {
+            "name": "Title"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "PVTI_lADODE36584A64MLzgdtLaw",
+    "content": {
+      "title": "card teste finalizado com false",
+      "body": ""
+    },
+    "fieldValues": {
+      "nodes": [
+        {
+          "optionId": "deeb62cf",
+          "name": "Finalizado ✅",
+          "field": {
+            "name": "Status"
+          }
+        },
+        {
+          "text": "card teste finalizado com false",
+          "field": {
+            "name": "Title"
+          }
+        },
+        {
+          "text": "Teste",
+          "field": {
+            "name": "🏛️ Empresa"
+          }
+        },
+        {
+          "text": "Teste",
+          "field": {
+            "name": "👤 Coordenador"
+          }
+        },
+        {
+          "text": "ejsilva159@gmail.com",
+          "field": {
+            "name": "✉️ E-mail"
+          }
+        },
+        {
+          "optionId": "035ff2e8",
+          "name": "true",
+          "field": {
+            "name": "Notificado"
+          }
+        }
+      ]
+    }
+  }
+]

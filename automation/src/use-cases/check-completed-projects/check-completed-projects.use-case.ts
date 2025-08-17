@@ -95,10 +95,10 @@ export class CheckCompletedProjectsUseCase {
     return field?.name ?? null
   }
 
-  private statusFieldId = "PVTSSF_lADODE36584A64MLzgvV8uc"
+  private statusFieldId = "PVTSSF_lADODE36584A64MLzgzanDA"
 
   async updateCardField(itemId: string): Promise<void> {
-    const optionId = "b0c02715" // id da opção "true"
+    const optionId = "035ff2e8" // id da opção "true"
 
     const mutation = `
       mutation {
@@ -108,7 +108,7 @@ export class CheckCompletedProjectsUseCase {
             itemId: "${itemId}"
             fieldId: "${this.statusFieldId}"
             value: {
-              text: "true"
+              singleSelectOptionId: "${optionId}"
             }
           }
         ) {

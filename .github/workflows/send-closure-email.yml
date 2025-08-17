@@ -1,8 +1,8 @@
-name: Enviar e-mail de aditivo
+name: Enviar e-mail de encerramento
 
 on:
   schedule:
-    - cron: '0 3 * * *' 
+    - cron: '0 4 * * *' 
   workflow_dispatch:     # Permite execução manual também
 
 jobs:
@@ -34,4 +34,4 @@ jobs:
           SMTP_SECURE: false
           DEFAULT_EMAIL_FROM: ${{ secrets.DEFAULT_EMAIL_FROM }}
           REPOSITORY_ACCESS_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
-        run: npx tsx scripts/check-addendum-projects.ts
+        run: npx tsx scripts/check-completed-projects.ts

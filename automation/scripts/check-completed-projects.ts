@@ -58,9 +58,7 @@ async function main() {
 
       // Atualiza o campo "Notificado" para true
       await checkCompletedProjectsUseCase.updateCardField(card.id)
-    } else {
-      console.log("Card já enviado")
-    }
+    } 
   }
 }
 

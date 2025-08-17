@@ -4,7 +4,7 @@ import { NodemailerEmailService } from "@/services/email-service/implementations
 import {
   SendAddendumEmailRequest,
   SendAddendumEmailUseCase,
-} from "@/use-cases/send-addend-email.use-case"
+} from "@/use-cases/send-addendum-email.use-case"
 import { HandlebarsHtmlCompiler } from "@/services/email-service/implementations/handlebars-html-compiler"
 
 const bodySchema = z.object({

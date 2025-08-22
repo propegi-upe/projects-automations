@@ -78,6 +78,18 @@ export class ProjectsService {
       throw new Error("Erro ao buscar tarefas.")
     }
 
+    console.dir(json, { depth: null })
+
+    if (!json.data || !json.data.node) {
+      console.error(
+        "Resposta inesperada do GitHub GraphQL:",
+        JSON.stringify(json, null, 2)
+      )
+      throw new Error(
+        "Não foi possível carregar o projeto. Verifique se o ID e as permissões estão corretos."
+      )
+    }
+
     const items = json.data.node.items.nodes
 
     // Se schema não foi passado, retornamos tudo cru

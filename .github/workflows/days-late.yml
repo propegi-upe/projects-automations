@@ -6,8 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  projects: write
+  contents: write
 
 jobs:
   increment-overdue:

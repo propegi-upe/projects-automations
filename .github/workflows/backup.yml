@@ -31,10 +31,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+          cache: 'npm'
 
       # Etapa 3: Instalar dependências na pasta automation
       - name: Instalar dependências
-        run: npm install
+        run: npm ci     # usa package-lock.json e integra com cache
 
       # Etapa 4: Executar script de backup
       - name: Executar script de backup

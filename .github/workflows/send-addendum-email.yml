@@ -21,9 +21,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Instalar dependências
-        run: npm install
+        run: npm ci     # usa package-lock.json e integra com cache
 
       - name: Executar script de envio de e-mail de aditivo
         env:

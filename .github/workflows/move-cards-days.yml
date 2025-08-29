@@ -1,4 +1,4 @@
-name: Mover cards atrasados do GitHub Project
+name: Mover cards atrasados dias fixos do GitHub Project
 
 on:
   schedule:

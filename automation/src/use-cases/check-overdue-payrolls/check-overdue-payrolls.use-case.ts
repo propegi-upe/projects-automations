@@ -1,7 +1,7 @@
 import { env } from '../../env'; 
 
-export class CheckOverduePayrollsUseCase  { 
-    async getGroupedTasksFromProject(projectId: string) {
+export class CheckOverduePayrollsUseCase {
+  async getGroupedTasksFromProject(projectId: string) {
     const query = `
     query {
         node(id: "${projectId}") {
@@ -80,30 +80,32 @@ export class CheckOverduePayrollsUseCase  {
     return json.data.node.items.nodes
   }
 
-    // Retorna o valor de um campo SingleSelect com base no nome do campo
-    getSingleSelectValue(item: any, fieldName: string): string | null {
-        const field = item.fieldValues.nodes.find(
-        (f: any) => f.field?.name === fieldName && f.name !== undefined
-        )
-        return field?.name ?? null
-    }
+  // Retorna o valor de um campo SingleSelect com base no nome do campo
+  getSingleSelectValue(item: any, fieldName: string): string | null {
+    const field = item.fieldValues.nodes.find(
+      (f: any) => f.field?.name === fieldName && f.name !== undefined
+    )
+    return field?.name ?? null
+  }
 
-    //Retorna o valor de um campo Date
-    getDateValue(item: any, fieldName: string): string | null {
-        const field = item.fieldValues.nodes.find(
-        (f: any) => f.field?.name === fieldName && f.date !== undefined
-        )
-        return field?.date ?? null
-    }
+  //Retorna o valor de um campo Date
+  getDateValue(item: any, fieldName: string): string | null {
+    const field = item.fieldValues.nodes.find(
+      (f: any) => f.field?.name === fieldName && f.date !== undefined
+    )
+    return field?.date ?? null
+  }
 
-    private statusOptionIds: Record<string, string> = {
+  private statusOptionIds: Record<string, string> = {
     "Folhas em Preparação": "f75ad846",
     "Em Atraso de Empenho": "2123d802",
     Empenhada: "61e4505c",
     "Em Atraso de Liquidação": "e67a2e5f",
     Liquidada: "47fc9ee4",
     "OB Emitida": "98236657",
+    "Em PD": "df73e18b",
     "Em Atraso de PD": "73d00594",
+    "Em Atraso de OB": "1c0ce8b2",
   }
 
   private statusFieldId = "PVTSSF_lADODE36584A8ZDOzgwZ5bI"

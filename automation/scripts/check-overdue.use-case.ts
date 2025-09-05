@@ -20,9 +20,7 @@ const overdueRules = [
     name: "Atraso de PD",
     currentStatuses: ["Liquidada"],
     // Se hoje é depois do dia 2 do mês seguinte à data de referência
-    isOverdue: () =>
-      dayjs().date() > 2 &&
-      dayjs().isAfter(dayjs().startOf("month").add(1, "month").date(2), "day"),
+    isOverdue: () => dayjs().date() > 2,
     targetStatus: "Em Atraso de PD",
   },
   {

@@ -27,6 +27,7 @@ export class NodemailerEmailService implements EmailsService {
       subject: email.subject,
       text: email.text,
       html: email.html,
+      cc: ["augusto.oliveira@upe.br"],
     })
   }
 }

@@ -23,7 +23,7 @@ export class SendClosureEmailUseCase {
     companyName,
     professorName,
   }: SendClosureEmailRequest) {
-    const templatePath = path.resolve("src/views/templates/addendum-email.hbs")
+    const templatePath = path.resolve("src/views/templates/closure-email.hbs")
 
     const html = await this.htmlCompiler.generateHtml({
       object: { projectName, companyName, professorName, to },

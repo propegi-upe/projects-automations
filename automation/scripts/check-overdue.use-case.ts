@@ -5,26 +5,21 @@ const BOARD_ID = "PVT_kwDODE36584A8ZDO"
 
 const overdueRules = [
   {
-    name: "Atraso de Empenho",
     currentStatuses: ["Folhas em Preparação"],
     isOverdue: () => dayjs().date() > 24,
     targetStatus: "Em Atraso de Empenho",
   },
   {
-    name: "Atraso de Liquidação",
     currentStatuses: ["Empenhada"],
     isOverdue: () => dayjs().date() > 28,
     targetStatus: "Em Atraso de Liquidação",
   },
   {
-    name: "Atraso de PD",
     currentStatuses: ["Liquidada"],
-    // Se hoje é depois do dia 2 do mês seguinte à data de referência
     isOverdue: () => dayjs().date() > 2,
     targetStatus: "Em Atraso de PD",
   },
   {
-    name: "Atraso de OB",
     currentStatuses: ["Em PD"],
     isOverdue: () => dayjs().date() > 11,
     targetStatus: "Em Atraso de OB",
@@ -39,14 +34,19 @@ async function main() {
 
   for (const card of allCards) {
     const status =
-      checkOverduePayrollsUseCase.getSingleSelectValue(card, "Status") ?? "Sem status"
+      checkOverduePayrollsUseCase.getSingleSelectValue(card, "Status") ??
+      "Sem status"
 
     for (const rule of overdueRules) {
       if (!rule.currentStatuses.includes(status)) continue
 
       if (rule.isOverdue() && status !== rule.targetStatus) {
         console.log(
-          `Movendo "${card.content?.title ?? "Sem título"}" de "${status}" para "${rule.targetStatus}" - Regra: ${rule.name}`
+          `Movendo "${
+            card.content?.title ?? "Sem título"
+          }" de "${status}" para "${rule.targetStatus}" - Regra: ${
+            rule.targetStatus
+          }`
         )
 
         await checkOverduePayrollsUseCase.updateStatusOfItem(

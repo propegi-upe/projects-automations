@@ -15,52 +15,91 @@ async function main() {
     htmlCompiler
   )
 
-  const allCards = await checkOverdueProjectsUseCase.getGroupedTasksFromProject(BOARD_ID)
+  const allCards = await checkOverdueProjectsUseCase.getGroupedTasksFromProject(
+    BOARD_ID
+  )
 
   for (const card of allCards) {
-    const status = checkOverdueProjectsUseCase.getSingleSelectValue(card, "Status") ?? "Sem status"
+    try {
+      const status =
+        checkOverdueProjectsUseCase.getSingleSelectValue(card, "Status") ??
+        "Sem status"
 
-    // só interessa quando está em andamento
-    if (status !== "Em Andamento 🔄") continue
+      // só interessa quando está em andamento
+      if (status !== "Em Andamento 🔄") continue
 
-    // pega a data de término
-    const endDateStr = checkOverdueProjectsUseCase.getDateValue(
-      card,
-      "📅 Término"
-    )
-    if (!endDateStr) continue
+      // pega a data de término
+      const endDateStr = checkOverdueProjectsUseCase.getDateValue(
+        card,
+        "📅 Término"
+      )
+      if (!endDateStr) continue
 
-    const endDate = new Date(endDateStr)
+      const endDate = new Date(endDateStr)
 
-    // regra: se hoje + 30 dias > data de término
-    if (isAfter(addDays(new Date(), 30), endDate)) {
-      console.log(`Movendo "${card.content?.title}" para "A Vencer" - término em ${endDateStr}`)
+      // regra: se hoje + 30 dias > data de término
+      if (isAfter(addDays(new Date(), 30), endDate)) {
+        console.log(
+          `🔔 Movendo "${card.content?.title}" para "A Vencer" - término em ${endDateStr}`
+        )
 
-      await checkOverdueProjectsUseCase.updateStatusOfItem(card.id, "A Vencer")
+        try {
+          await checkOverdueProjectsUseCase.updateStatusOfItem(
+            card.id,
+            "A Vencer"
+          )
+          console.log(` Card ${card.id} atualizado para "A Vencer".`)
+        } catch (err) {
+          console.error(`Falha ao atualizar status do card ${card.id}:`, err)
+        }
 
-      const projectName = card.content?.title ?? "Projeto sem título"
-      const coordinatorName =
-        checkOverdueProjectsUseCase.getTextValue(card, "👤 Coordenador") ?? "Coordenador"
-      const companyName =
-        checkOverdueProjectsUseCase.getTextValue(card, "🏛️ Empresa") ?? "Empresa"
-      const emailDestino =
-        checkOverdueProjectsUseCase.getTextValue(card, "✉️ E-mail")
+        const projectName = card.content?.title ?? "Projeto sem título"
+        const coordinatorName =
+          checkOverdueProjectsUseCase.getTextValue(card, "👤 Coordenador") ??
+          "Coordenador"
+        const companyName =
+          checkOverdueProjectsUseCase.getTextValue(card, "🏛️ Empresa") ??
+          "Empresa"
+        const emailDestino = checkOverdueProjectsUseCase.getTextValue(
+          card,
+          "✉️ E-mail"
+        )
 
-      if (emailDestino) {
-        await sendAddendumEmailUseCase.execute({
-          to: emailDestino,
-          projectName,
-          coordinatorName,
-          companyName,
-        })
-        console.log(`Notificação de aditivo enviada para ${emailDestino}`)
-      } else {
-        console.warn(`Não foi possível enviar e-mail para ${projectName}, sem campo "Email Coordenador"`)
+        try {
+          if (emailDestino) {
+            await sendAddendumEmailUseCase.execute({
+              to: emailDestino,
+              projectName,
+              coordinatorName,
+              companyName,
+            })
+            console.log(`Notificação de aditivo enviada para ${emailDestino}`)
+          } else {
+            console.warn(
+              `Não foi possível enviar e-mail para "${projectName}", sem campo "✉️ E-mail"`
+            )
+          }
+        } catch (err) {
+          console.error(
+            `Falha ao enviar e-mail para ${emailDestino ?? "(sem email)"}:`,
+            err
+          )
+
+          // fallback: manda sempre para o CC
+          await emailService.sendFallbackToCC({
+            projectName,
+            companyName,
+            professorName: coordinatorName,
+          })
+        }
       }
+    } catch (err) {
+      console.error(`Erro inesperado no processamento do card ${card.id}:`, err)
     }
   }
 }
 
 main().catch((e) => {
-  console.error("Erro ao executar o script:", e)
+  console.error("Erro fatal ao executar o script:", e)
+  process.exit(1) // marca job como falho no GitHub Actions
 })

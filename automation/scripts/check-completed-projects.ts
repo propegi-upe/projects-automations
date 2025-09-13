@@ -15,53 +15,84 @@ async function main() {
     htmlCompiler
   )
 
-  const allCards = await checkCompletedProjectsUseCase.getGroupedTasksFromProject(BOARD_ID)
+  const allCards =
+    await checkCompletedProjectsUseCase.getGroupedTasksFromProject(BOARD_ID)
 
   for (const card of allCards) {
-    const status = checkCompletedProjectsUseCase.getSingleSelectValue(card, "Status") ?? "Sem status"
+    try {
+      const status =
+        checkCompletedProjectsUseCase.getSingleSelectValue(card, "Status") ??
+        "Sem status"
 
-    if (status !== "Finalizado ✅") continue
+      if (status !== "Finalizado ✅") continue
 
-    const notificado = checkCompletedProjectsUseCase.getSingleSelectValue(card, "Notificado");
-
-    if (!notificado || notificado === "false") {
-      console.log(`Projeto ${card.content?.title} ainda não notificado.`)
-
-      const projectName = card.content?.title ?? "Projeto sem título"
-
-      const companyName =
-        checkCompletedProjectsUseCase.getTextValue(card, "🏛️ Empresa") ??
-        "Empresa"
-
-      const professorName =
-        checkCompletedProjectsUseCase.getTextValue(card, "👤 Coordenador") ??
-        "Coordenador"
-
-      const emailDestino = checkCompletedProjectsUseCase.getTextValue(
+      const notificado = checkCompletedProjectsUseCase.getSingleSelectValue(
         card,
-        "✉️ E-mail"
+        "Notificado"
       )
 
-      if (emailDestino) {
-        await sendClosureEmailUseCase.execute({
-          to: emailDestino,
-          projectName,
-          companyName,
-          professorName,
-        })
-        console.log(`Notificação de encerramento enviada para ${emailDestino}`)
-      } else {
-        console.warn(
-          `Não foi possível enviar e-mail para ${projectName}, sem campo "✉️ E-mail"`
-        )
-      }
+      if (!notificado || notificado === "false") {
+        console.log(`🔔 Projeto "${card.content?.title}" ainda não notificado.`)
 
-      // Atualiza o campo "Notificado" para true
-      await checkCompletedProjectsUseCase.updateCardField(card.id)
-    } 
+        const projectName = card.content?.title ?? "Projeto sem título"
+        const companyName =
+          checkCompletedProjectsUseCase.getTextValue(card, "🏛️ Empresa") ??
+          "Empresa"
+        const professorName =
+          checkCompletedProjectsUseCase.getTextValue(card, "👤 Coordenador") ??
+          "Coordenador"
+
+        const emailDestino = checkCompletedProjectsUseCase.getTextValue(
+          card,
+          "✉️ E-mail"
+        )
+
+        try {
+          if (emailDestino) {
+            await sendClosureEmailUseCase.execute({
+              to: emailDestino,
+              projectName,
+              companyName,
+              professorName,
+            })
+            console.log(`Notificação enviada para ${emailDestino}`)
+          } else {
+            console.warn(
+              `Não foi possível enviar e-mail: projeto "${projectName}" sem campo "✉️ E-mail"`
+            )
+          }
+        } catch (err) {
+          console.error(
+            `Falha ao enviar e-mail para ${emailDestino ?? "(sem email)"}:`,
+            err
+          )
+
+          // Fallback: notifica sempre o CC, mesmo se o principal falhou
+          await emailService.sendFallbackToCC({
+            projectName,
+            companyName,
+            professorName,
+          })
+        }
+
+        // Marca card como notificado, mesmo que tenha ido só pro CC
+        try {
+          await checkCompletedProjectsUseCase.updateCardField(card.id)
+          console.log(`Card ${card.id} marcado como notificado.`)
+        } catch (err) {
+          console.error(
+            `Falha ao atualizar campo Notificado do card ${card.id}:`,
+            err
+          )
+        }
+      }
+    } catch (err) {
+      console.error(`Erro inesperado no processamento do card ${card.id}:`, err)
+    }
   }
 }
 
 main().catch((e) => {
-  console.error("Erro ao executar o script:", e)
+  console.error("Erro fatal ao executar o script:", e)
+  process.exit(1) // garante status de erro no GitHub Actions
 })

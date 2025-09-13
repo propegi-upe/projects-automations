@@ -104,14 +104,11 @@ export class ProjectsService {
       const parsed = parseFieldValues(item.fieldValues.nodes, schema)
 
       const task = {
-        id: item.id,
-        title: item.content?.title ?? "Sem título",
-        url: item.content?.url ?? null,
-        body: item.content?.body ?? null,
+        Projeto_ID: item.id,
         ...parsed,
       }
 
-      const statusGroup = (task as any).status ?? "Sem status"
+      const statusGroup = (task as any).Status ?? "Sem status"
       if (!groupedTasks[statusGroup]) {
         groupedTasks[statusGroup] = []
       }

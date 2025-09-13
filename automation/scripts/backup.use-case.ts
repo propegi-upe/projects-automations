@@ -3,11 +3,15 @@ import path from "path"
 import { config } from "dotenv"
 import { ProjectsService } from "../src/services/projects.service.js"
 import { saveJsonFile } from "../src/utils/save-json-file.js"
+import { GetAllTasksDTProjectOrgUseCase } from "@/use-cases/tech-dev-projects/fetch-all-tasks-tech-dev.use-case.js"
 
 config()
 
 const projectId = "PVT_kwDODE36584A64ML"
+
 const service = new ProjectsService()
+const getAllTasksDTProjecsUseCase = new GetAllTasksDTProjectOrgUseCase(service)
+
 const backupDirectory = path.resolve("data/backups")
 const maxBackupFiles = 5
 
@@ -25,7 +29,7 @@ async function removeOldBackups() {
       for (const name of oldFiles) {
         const filePath = path.join(backupDirectory, name)
         await fs.unlink(filePath)
-        console.log(`🗑️ Removed old backup: ${name}`)
+        console.log(`Removed old backup: ${name}`)
       }
     }
   } catch (err) {
@@ -37,7 +41,7 @@ const main = async () => {
   try {
     await removeOldBackups()
 
-    const data = await service.getGroupedTasksFromProject(projectId)
+    const data = await getAllTasksDTProjecsUseCase.execute(projectId)
     const today = new Date().toISOString().split("T")[0]
 
     await saveJsonFile(data, `backups/backup-${today}`)

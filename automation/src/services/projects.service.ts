@@ -98,24 +98,14 @@ export class ProjectsService {
     }
 
     // Caso contrário, processamos e agrupamos
-    const groupedTasks: Record<string, any[]> = {}
-
-    for (const item of items) {
+    const tasks = items.map((item: any) => {
       const parsed = parseFieldValues(item.fieldValues.nodes, schema)
-
-      const task = {
+      return {
         Projeto_ID: item.id,
         ...parsed,
       }
+    })
 
-      const statusGroup = (task as any).Status ?? "Sem status"
-      if (!groupedTasks[statusGroup]) {
-        groupedTasks[statusGroup] = []
-      }
-
-      groupedTasks[statusGroup].push(task)
-    }
-
-    return groupedTasks
+    return tasks
   }
 }

@@ -4,7 +4,6 @@ import { ProjectsService } from "@/services/projects.service"
 const schema: FieldSchema = {
   Segmento: { fieldName: "Segmento", type: "text" },
   Status: { fieldName: "Status", type: "singleSelect" },
-  "Sub-issues progress": { fieldName: "Sub-issues progress", type: "text" },
   "Interveniência com o IA-UPE": { fieldName: "📁 Interveniência com o IAUPE", type: "text" },
   "Convênio ou acordo": { fieldName: "🤝 Convênio ou acordo", type: "text" },
   Edital: { fieldName: "Edital", type: "text" },
@@ -33,12 +32,13 @@ const schema: FieldSchema = {
 }
 
 // Lista todas as tasks de um projeto com organização
-export class GetAllTasksDTProjectOrgUseCase {
-    constructor(
-        private projectService: ProjectsService
-    ) {}
+export class GetAllTasksTechnologicalDevelopmentProjectOrgUseCase {
+  constructor(private projectService: ProjectsService) {}
 
-    async execute(projectId: string) {
-        return await this.projectService.getGroupedTasksFromProject(projectId, schema)
-    }
+  async execute(projectId: string) {
+    return await this.projectService.getGroupedTasksFromProject(
+      projectId,
+      schema
+    )
+  }
 }

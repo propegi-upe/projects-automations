@@ -1,7 +1,6 @@
+import { ProjectsService } from "@/services/projects.service"
 import { CheckOverduePayrollsUseCase } from "@/use-cases/check-overdue-payrolls/check-overdue-payrolls.use-case"
 import dayjs from "dayjs"
-
-const BOARD_ID = "PVT_kwDODE36584A8ZDO" 
 
 const overdueRules = [
   {
@@ -27,10 +26,12 @@ const overdueRules = [
 ]
 
 async function main() {
-  const checkOverduePayrollsUseCase = new CheckOverduePayrollsUseCase()
-  const allCards = await checkOverduePayrollsUseCase.getGroupedTasksFromProject(
-    BOARD_ID
+  const projectsService = new ProjectsService()
+  const checkOverduePayrollsUseCase = new CheckOverduePayrollsUseCase(
+    projectsService
   )
+  const allCards =
+    await checkOverduePayrollsUseCase.getGroupedTasksFromProject()
 
   for (const card of allCards) {
     const status =

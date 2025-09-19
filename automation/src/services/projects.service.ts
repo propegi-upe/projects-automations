@@ -1,6 +1,12 @@
 import { FieldSchema, parseFieldValues } from "../field-parser/field-parser"
 import { env } from "../env"
 
+interface ProjectCard {
+  id: string
+  content?: { title?: string; number?: number; url?: string }
+  fieldValues: { nodes: any[] }
+}
+
 export class ProjectsService {
   async getGroupedTasksFromProject(projectId: string, schema?: FieldSchema) {
     let hasNextPage = true
@@ -121,7 +127,7 @@ export class ProjectsService {
     return tasks
   }
 
-   // Retorna o valor de um campo SingleSelect com base no nome do campo
+  // Retorna o valor de um campo SingleSelect com base no nome do campo
   getSingleSelectValue(item: any, fieldName: string): string | null {
     const field = item.fieldValues.nodes.find(
       (f: any) => f.field?.name === fieldName && f.name !== undefined
@@ -142,5 +148,46 @@ export class ProjectsService {
       (f: any) => f.field?.name === fieldName && f.text !== undefined
     )
     return field?.text ?? null
+  }
+
+  async updateSingleSelectField(
+    projectId: string,
+    itemId: string,
+    fieldId: string,
+    optionId: string
+  ): Promise<void> {
+    const mutation = `
+      mutation {
+        updateProjectV2ItemFieldValue(
+          input: {
+            projectId: "${projectId}"
+            itemId: "${itemId}"
+            fieldId: "${fieldId}"
+            value: {
+              singleSelectOptionId: "${optionId}"
+            }
+          }
+        ) {
+          projectV2Item {
+            id
+          }
+        }
+      }
+    `
+
+    const response: Response = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.REPOSITORY_ACCESS_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query: mutation }),
+    })
+
+    const json: any = await response.json()
+    if (json.errors) {
+      console.error(json.errors)
+      throw new Error("Erro ao atualizar campo do item.")
+    }
   }
 }

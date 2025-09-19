@@ -1,21 +1,13 @@
 import { ProjectsService } from "@/services/projects.service"
-import { env } from "../../env"
 
-export class CheckOverduePayrollsUseCase {
+export class CheckAddendumProjectsUseCase {
   private statusOptionIds: Record<string, string> = {
-    "Folhas em Preparação": "f75ad846",
-    "Em Atraso de Empenho": "2123d802",
-    Empenhada: "61e4505c",
-    "Em Atraso de Liquidação": "e67a2e5f",
-    Liquidada: "47fc9ee4",
-    "OB Emitida": "98236657",
-    "Em PD": "df73e18b",
-    "Em Atraso de PD": "73d00594",
-    "Em Atraso de OB": "1c0ce8b2",
+    "Em Andamento 🔄": "511501b7",
+    "A Vencer": "c9370880",
   }
 
-  private statusFieldId = "PVTSSF_lADODE36584A8ZDOzgwZ5bI"
-  private projectId = "PVT_kwDODE36584A8ZDO"
+  private statusFieldId = "PVTSSF_lADODE36584A64MLzgvV8uc"
+  private projectId = "PVT_kwDODE36584A64ML"
 
   constructor(private projectsService: ProjectsService) {}
 
@@ -29,6 +21,10 @@ export class CheckOverduePayrollsUseCase {
 
   getDateValue(item: any, fieldName: string): string | null {
     return this.projectsService.getDateValue(item, fieldName)
+  }
+
+  getTextValue(item: any, fieldName: string): string | null {
+    return this.projectsService.getTextValue(item, fieldName)
   }
 
   async updateStatusOfItem(itemId: string, newStatus: string): Promise<void> {

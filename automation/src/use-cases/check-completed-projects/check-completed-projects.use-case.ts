@@ -1,137 +1,31 @@
-import { env } from '../../env'; 
+import { ProjectsService } from "@/services/projects.service"
+import { env } from "../../env"
 
 export class CheckCompletedProjectsUseCase {
-  async getGroupedTasksFromProject(projectId: string) {
-    const query = `
-    query {
-        node(id: "${projectId}") {
-          ... on ProjectV2 {
-            items(first: 100) {
-              nodes {
-                id
-                content {
-                  ... on Issue {
-                    title
-                    number
-                    url
-                  }
-                  ... on PullRequest {
-                    title
-                    number
-                    url
-                  }
-                  ... on DraftIssue {
-                    title
-                    body
-                  }
-                }
-                fieldValues(first: 30) {
-                  nodes {
-                    ... on ProjectV2ItemFieldSingleSelectValue {
-                      optionId
-                      name
-                      field {
-                        ... on ProjectV2SingleSelectField {
-                          name
-                        }
-                      }
-                    }
-                    ... on ProjectV2ItemFieldTextValue {
-                      text
-                      field {
-                        ... on ProjectV2Field {
-                          name
-                        }
-                      }
-                    }
-                    ... on ProjectV2ItemFieldDateValue {
-                      date
-                      field {
-                        ... on ProjectV2Field {
-                          name
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    `
+  private statusFieldId = "PVTSSF_lADODE36584A64MLzgzanDA"
+  private projectId = "PVT_kwDODE36584A64ML"
+  private optionId = "035ff2e8" // id da opção "true"
 
-    const response = await fetch("https://api.github.com/graphql", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${env.REPOSITORY_ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query }),
-    })
+  constructor(private projectsService: ProjectsService) {}
 
-    const json = await response.json()
-
-    if (json.errors) {
-      console.error(json.errors)
-      throw new Error("Erro ao buscar tarefas.")
-    }
-
-    return json.data.node.items.nodes
+  async getGroupedTasksFromProject() {
+    return this.projectsService.getGroupedTasksFromProject(this.projectId)
   }
 
   getTextValue(item: any, fieldName: string): string | null {
-    const field = item.fieldValues.nodes.find(
-      (f: any) => f.field?.name === fieldName && f.text !== undefined
-    )
-    return field?.text ?? null
+    return this.projectsService.getTextValue(item, fieldName)
   }
 
-  // Retorna o valor de um campo SingleSelect com base no nome do campo
   getSingleSelectValue(item: any, fieldName: string): string | null {
-    const field = item.fieldValues.nodes.find(
-      (f: any) => f.field?.name === fieldName && f.name !== undefined
-    )
-    return field?.name ?? null
+    return this.projectsService.getSingleSelectValue(item, fieldName)
   }
-
-  private statusFieldId = "PVTSSF_lADODE36584A64MLzgzanDA"
 
   async updateCardField(itemId: string): Promise<void> {
-    const optionId = "035ff2e8" // id da opção "true"
-
-    const mutation = `
-      mutation {
-        updateProjectV2ItemFieldValue(
-          input: {
-            projectId: "PVT_kwDODE36584A64ML"
-            itemId: "${itemId}"
-            fieldId: "${this.statusFieldId}"
-            value: {
-              singleSelectOptionId: "${optionId}"
-            }
-          }
-        ) {
-          projectV2Item {
-            id
-          }
-        }
-      }
-    `
-
-    const response = await fetch("https://api.github.com/graphql", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${env.REPOSITORY_ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query: mutation }),
-    })
-
-    const json = await response.json()
-    if (json.errors) {
-      console.error(json.errors)
-      throw new Error("Erro ao atualizar status do item.")
-    }
+    await this.projectsService.updateSingleSelectField(
+      this.projectId,
+      itemId,
+      this.statusFieldId,
+      this.optionId
+    )
   }
-} 
+}

@@ -3,11 +3,13 @@ import { HandlebarsHtmlCompiler } from "@/services/email-service/implementations
 import { SendClosureEmailUseCase } from "@/use-cases/send-closure-email.use-case"
 
 import { CheckCompletedProjectsUseCase } from "@/use-cases/check-completed-projects/check-completed-projects.use-case"
-
-const BOARD_ID = "PVT_kwDODE36584A64ML" 
+import { ProjectsService } from "@/services/projects.service"
 
 async function main() {
-  const checkCompletedProjectsUseCase = new CheckCompletedProjectsUseCase()
+  const projectsService = new ProjectsService()
+  const checkCompletedProjectsUseCase = new CheckCompletedProjectsUseCase(
+    projectsService
+  )
   const emailService = new NodemailerEmailService()
   const htmlCompiler = new HandlebarsHtmlCompiler()
   const sendClosureEmailUseCase = new SendClosureEmailUseCase(
@@ -16,7 +18,7 @@ async function main() {
   )
 
   const allCards =
-    await checkCompletedProjectsUseCase.getGroupedTasksFromProject(BOARD_ID)
+    await checkCompletedProjectsUseCase.getGroupedTasksFromProject()
 
   for (const card of allCards) {
     try {

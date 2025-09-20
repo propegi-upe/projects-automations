@@ -13,13 +13,13 @@ type OverdueRule = {
 
 const overdueRules: OverdueRule[] = [
   {
-    currentStatuses: ["Folhas em Preparação"],
+    currentStatuses: ["⏳ Folhas em Preparação"],
     dueDateField: "Data limite para empenho",
     fallbackDateCheck: () => dayjs().date() > 24,
     targetStatus: "Em Atraso de Empenho",
   },
   {
-    currentStatuses: ["Empenhada"],
+    currentStatuses: ["🔒 Empenhada"],
     dueDateField: "Data limite para liquidação",
     fallbackDateCheck: () => dayjs().date() > 28,
     targetStatus: "Em Atraso de Liquidação",
@@ -31,7 +31,7 @@ const overdueRules: OverdueRule[] = [
     targetStatus: "Em Atraso de PD",
   },
   {
-    currentStatuses: ["Em PD"],
+    currentStatuses: ["🗓️ Em PD"],
     dueDateField: "Data limite para OB",
     fallbackDateCheck: () => dayjs().date() > 11,
     targetStatus: "Em Atraso de OB",

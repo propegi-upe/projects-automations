@@ -1,0 +1,15 @@
+<p>Prezados,</p>
+
+{{#each (splitMessage message) }}
+<p>{{this}}</p>
+{{/each}}
+
+<p>
+    👉 <a href="{{linkQuadro}}" class="button">Abrir quadro</a>
+</p>
+
+<p>
+    Atenciosamente,<br />
+    {{remetenteNome}}<br />
+    {{remetenteCargo}}
+</p>

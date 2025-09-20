@@ -1,5 +1,4 @@
 import { ProjectsService } from "@/services/projects.service"
-import { env } from "../../env"
 
 export class CheckOverduePayrollsUseCase {
   private statusOptionIds: Record<string, string> = {
@@ -29,6 +28,10 @@ export class CheckOverduePayrollsUseCase {
 
   getDateValue(item: any, fieldName: string): string | null {
     return this.projectsService.getDateValue(item, fieldName)
+  }
+
+  getTextValue(item: any, fieldName: string): string | null {
+    return this.projectsService.getTextValue(item, fieldName)
   }
 
   async updateStatusOfItem(itemId: string, newStatus: string): Promise<void> {

@@ -52,7 +52,7 @@ async function main() {
         try {
           if (emailDestino) {
             await sendClosureEmailUseCase.execute({
-              to: emailDestino,
+              to: [emailDestino],
               projectName,
               companyName,
               professorName,

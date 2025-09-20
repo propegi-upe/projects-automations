@@ -3,12 +3,19 @@ import { CheckOverduePayrollsUseCase } from "@/use-cases/check-overdue-payrolls/
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
+import { SendCheckOverdueEmailUseCase } from "@/use-cases/send-email-check-overdue-columns.use-case"
+import { NodemailerEmailService } from "@/services/email-service/implementations/nodemailer-email-service"
+import { HandlebarsHtmlCompiler } from "@/services/email-service/implementations/handlebars-html-compiler"
 
 type OverdueRule = {
   currentStatuses: string[]
   dueDateField: string // pega data do card
   fallbackDateCheck?: () => boolean // usado se não houver data
   targetStatus: string
+  notify?: {
+    to: string[] // destinatários principais
+    cc?: string[] // cópias
+  }
 }
 
 const overdueRules: OverdueRule[] = [
@@ -17,24 +24,36 @@ const overdueRules: OverdueRule[] = [
     dueDateField: "Data limite para empenho",
     fallbackDateCheck: () => dayjs().date() > 24,
     targetStatus: "Em Atraso de Empenho",
+    notify: {
+      to: ["ejsilva159@gmail.com", "ejs15@discente.ifpe.edu.br"],
+    },
   },
   {
     currentStatuses: ["🔒 Empenhada"],
     dueDateField: "Data limite para liquidação",
     fallbackDateCheck: () => dayjs().date() > 28,
     targetStatus: "Em Atraso de Liquidação",
+    notify: {
+      to: ["ejsilva159@gmail.com", "ejs15@discente.ifpe.edu.br"],
+    },
   },
   {
     currentStatuses: ["🧾 Liquidada"],
     dueDateField: "Data limite de PD",
     fallbackDateCheck: () => dayjs().date() > 2,
     targetStatus: "Em Atraso de PD",
+    notify: {
+      to: ["ejsilva159@gmail.com", "ejs15@discente.ifpe.edu.br"],
+    },
   },
   {
     currentStatuses: ["🗓️ Em PD"],
     dueDateField: "Data limite para OB",
     fallbackDateCheck: () => dayjs().date() > 11,
     targetStatus: "Em Atraso de OB",
+    notify: {
+      to: ["ejsilva159@gmail.com", "ejs15@discente.ifpe.edu.br"],
+    },
   },
 ]
 
@@ -87,7 +106,7 @@ async function main() {
 
       if (overdue && status !== rule.targetStatus) {
         console.log(
-          `🔔 Movendo "${
+          `Movendo "${
             card.content?.title ?? "Sem título"
           }" de "${status}" para "${rule.targetStatus}" - ${reason}`
         )
@@ -98,6 +117,45 @@ async function main() {
         )
 
         card.status = rule.targetStatus
+
+        // --- envio de e-mail ---
+        if (rule.notify?.to?.length) {
+          const emailService = new NodemailerEmailService()
+          const htmlCompiler = new HandlebarsHtmlCompiler()
+          const sendEmailUseCase = new SendCheckOverdueEmailUseCase(
+            emailService,
+            htmlCompiler
+          )
+
+          const messageMap: Record<string, string> = {
+            "Em Atraso de Empenho": `Comunicamos que o processo referente ao ${card.content?.title} encontra-se em atraso de empenho, o que tem ocasionado impacto direto no cronograma de execução das atividades.
+
+            Ressaltamos a importância da regularização do empenho para evitar novos reflexos nas etapas seguintes (liquidação e pagamento).`,
+
+            "Em Atraso de Liquidação": `Informamos que o processo vinculado ao ${card.content?.title} encontra-se em atraso de liquidação,  impossibilitando o avanço para a etapa final de pagamento.
+            
+            Solicitamos a devida atenção para a regularização, a fim de assegurar a continuidade das atividades programadas e o cumprimento dos prazos pactuados.`,
+
+            "Em Atraso de PD": `Registramos que o processo referente ao ${card.content?.title} encontra-se em atraso de pagamento, gerando dificuldades na manutenção regular das atividades previstas.
+            
+            Solicitamos especial atenção para a finalização do processo, garantindo o cumprimento das obrigações financeiras e a regularidade da execução do projeto.`,
+
+            "Em Atraso de OB": `O processo referente ao ${card.content?.title} encontra-se em atraso de OB, impactando o andamento das etapas finais.`,
+          }
+
+          await sendEmailUseCase.execute({
+            to: rule.notify.to,
+            cc: rule.notify.cc ?? [],
+            projectName: card.content?.title ?? "Projeto sem título",
+            delayedProject: rule.targetStatus,
+            message: messageMap[rule.targetStatus] ?? "",
+            remetenteNome: "Augusto",
+            remetenteCargo: "Cargo/Função",
+            linkQuadro:
+              "https://github.com/orgs/propegi-upe/projects/12/views/1",
+          })
+        }
+
         break
       }
     }

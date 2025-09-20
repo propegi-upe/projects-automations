@@ -5,7 +5,7 @@ import { HtmlCompiler } from "@/services/email-service/html-compiler"
 import path from "path"
 
 export interface SendClosureEmailRequest {
-  to: string
+  to: string[]
   projectName: string
   companyName: string
   professorName: string

@@ -7,7 +7,7 @@ import { EmailsService } from "@/services/email-service/emails-service"
 import path from "path"
 
 export interface SendAddendumEmailRequest {
-  to: string
+  to: string[]
   projectName: string
   coordinatorName: string
   companyName: string

@@ -1,5 +1,5 @@
 import { addDays, isAfter } from "date-fns"
-import { CheckAddendumProjectsUseCase } from "@/use-cases/check-overdue-projects/check-addendum-projects.use-case"
+import { CheckAddendumProjectsUseCase } from "@/use-cases/check-addendum-projects/check-addendum-projects.use-case"
 import { NodemailerEmailService } from "@/services/email-service/implementations/nodemailer-email-service"
 import { HandlebarsHtmlCompiler } from "@/services/email-service/implementations/handlebars-html-compiler"
 import { SendAddendumEmailUseCase } from "@/use-cases/send-addendum-email.use-case"
@@ -69,7 +69,7 @@ async function main() {
         try {
           if (emailDestino) {
             await sendAddendumEmailUseCase.execute({
-              to: emailDestino,
+              to: [emailDestino],
               projectName,
               coordinatorName,
               companyName,

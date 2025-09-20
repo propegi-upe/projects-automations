@@ -1,5 +1,4 @@
 import { ProjectsService } from "@/services/projects.service"
-import { env } from "../../env"
 
 export class CheckCompletedProjectsUseCase {
   private statusFieldId = "PVTSSF_lADODE36584A64MLzgzanDA"

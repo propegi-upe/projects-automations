@@ -5,8 +5,6 @@ import { HandlebarsHtmlCompiler } from "@/services/email-service/implementations
 import { SendAddendumEmailUseCase } from "@/use-cases/send-addendum-email.use-case"
 import { ProjectsService } from "@/services/projects.service"
 
-const BOARD_ID = "PVT_kwDODE36584A64ML"
-
 async function main() {
   const projectsService = new ProjectsService()
   const checkOverdueProjectsUseCase = new CheckAddendumProjectsUseCase(

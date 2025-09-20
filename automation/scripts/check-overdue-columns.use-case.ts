@@ -1,31 +1,51 @@
 import { ProjectsService } from "@/services/projects.service"
 import { CheckOverduePayrollsUseCase } from "@/use-cases/check-overdue-payrolls/check-overdue-payrolls.use-case"
-import { formatISO } from "date-fns"
 import dayjs from "dayjs"
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
 
-const overdueRules = [
+type OverdueRule = {
+  currentStatuses: string[]
+  dueDateField: string // pega data do card
+  fallbackDateCheck?: () => boolean // usado se não houver data
+  targetStatus: string
+}
+
+const overdueRules: OverdueRule[] = [
   {
-    name: "Atraso de Empenho",
     currentStatuses: ["Folhas em Preparação"],
     dueDateField: "Data limite para empenho",
+    fallbackDateCheck: () => dayjs().date() > 24,
     targetStatus: "Em Atraso de Empenho",
   },
   {
-    name: "Atraso de Liquidação",
     currentStatuses: ["Empenhada"],
     dueDateField: "Data limite para liquidação",
+    fallbackDateCheck: () => dayjs().date() > 28,
     targetStatus: "Em Atraso de Liquidação",
   },
   {
-    name: "Atraso de PD",
     currentStatuses: ["Liquidada"],
     dueDateField: "Data limite de PD",
+    fallbackDateCheck: () => dayjs().date() > 2,
     targetStatus: "Em Atraso de PD",
+  },
+  {
+    currentStatuses: ["Em PD"],
+    dueDateField: "Data limite para OB",
+    fallbackDateCheck: () => dayjs().date() > 11,
+    targetStatus: "Em Atraso de OB",
   },
 ]
 
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
+// Define o fuso fixo, ex: Brasília
+const TIMEZONE = "America/Sao_Paulo"
+
 function isDateOverdue(dateStr: string): boolean {
-  return dayjs().isAfter(dayjs(dateStr), "day")
+  return dayjs().tz(TIMEZONE).isAfter(dayjs(dateStr).tz(TIMEZONE), "day")
 }
 
 async function main() {
@@ -33,6 +53,7 @@ async function main() {
   const checkOverduePayrollsUseCase = new CheckOverduePayrollsUseCase(
     projectsService
   )
+
   const allCards =
     await checkOverduePayrollsUseCase.getGroupedTasksFromProject()
 
@@ -44,22 +65,31 @@ async function main() {
     for (const rule of overdueRules) {
       if (!rule.currentStatuses.includes(status)) continue
 
+      let overdue = false //indica se o card está atrasado ou não
+      let reason = ""
+
       const dueDateStr = checkOverduePayrollsUseCase.getDateValue(
         card,
         rule.dueDateField
       )
-      if (!dueDateStr) continue
 
-      if (isDateOverdue(dueDateStr) && status !== rule.targetStatus) {
+      if (dueDateStr) {
+        if (isDateOverdue(dueDateStr)) {
+          overdue = true
+          reason = `${rule.dueDateField} venceu em ${dayjs(dueDateStr)
+            .tz(TIMEZONE)
+            .format("YYYY-MM-DD")}`
+        }
+      } else if (rule.fallbackDateCheck?.()) {
+        overdue = true
+        reason = `Fallback estático da regra "${rule.dueDateField}"`
+      }
+
+      if (overdue && status !== rule.targetStatus) {
         console.log(
-          `Movendo "${card.title}" de "${status}" para "${
-            rule.targetStatus
-          }" - ${rule.dueDateField} venceu em ${formatISO(
-            new Date(dueDateStr),
-            {
-              representation: "date",
-            }
-          )}`
+          `🔔 Movendo "${
+            card.content?.title ?? "Sem título"
+          }" de "${status}" para "${rule.targetStatus}" - ${reason}`
         )
 
         await checkOverduePayrollsUseCase.updateStatusOfItem(
@@ -67,7 +97,6 @@ async function main() {
           rule.targetStatus
         )
 
-        // Atualiza o status após a mudança para regras futuras
         card.status = rule.targetStatus
         break
       }

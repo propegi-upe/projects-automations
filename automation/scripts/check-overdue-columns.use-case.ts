@@ -25,7 +25,7 @@ const overdueRules: OverdueRule[] = [
     targetStatus: "Em Atraso de Liquidação",
   },
   {
-    currentStatuses: ["Liquidada"],
+    currentStatuses: ["🧾 Liquidada"],
     dueDateField: "Data limite de PD",
     fallbackDateCheck: () => dayjs().date() > 2,
     targetStatus: "Em Atraso de PD",

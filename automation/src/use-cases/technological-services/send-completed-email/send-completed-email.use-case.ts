@@ -33,7 +33,7 @@ export class SendCompletedEmailUseCase {
     const subject = `✅ [Projeto Finalizado] Solicitação de Informações Finais - ${projectName}`
 
     try {
-      if (to && to.length > 0 && to[0].trim() !== "") {
+      if (to && to.length > 0 && this.isValidEmail(to[0])) {
         const email = Email.create({ to, subject, html })
         await this.emailsService.send(email)
         console.log(`✅ Notificação enviada para ${to}`)
@@ -43,9 +43,21 @@ export class SendCompletedEmailUseCase {
       console.warn(
         `⚠️ Não foi possível enviar: projeto "${projectName}" sem campo "✉️ E-mail"`
       )
-      this.sendFallbackToCC({ projectName, companyName, professorName })
+      const reasonError = "Motivo: E-mail vazio ou inválido"
+      this.sendFallbackToCC({
+        projectName,
+        companyName,
+        professorName,
+        reasonError,
+      })
     } catch (error) {
-      this.sendFallbackToCC({ projectName, companyName, professorName })
+      const reasonError = "Motivo: erro inesperado"
+      this.sendFallbackToCC({
+        projectName,
+        companyName,
+        professorName,
+        reasonError,
+      })
     }
   }
 
@@ -53,6 +65,7 @@ export class SendCompletedEmailUseCase {
     projectName: string
     companyName: string
     professorName: string
+    reasonError?: string
   }): Promise<void> {
     const fallbackEmail = Email.create({
       to: ["ejsilva159@gmail.com"],
@@ -60,10 +73,17 @@ export class SendCompletedEmailUseCase {
       text: `Não foi possível enviar para o professor/coordenador. Notificando apenas o CC.
       Projeto: ${data.projectName}
       Empresa: ${data.companyName}
-      Coordenador: ${data.professorName}`,
+      Coordenador: ${data.professorName}
+      ${data.reasonError}`,
     })
 
     await this.emailsService.send(fallbackEmail)
     console.warn(`📩 Fallback enviado somente para CC`)
+  }
+
+  isValidEmail(email: string): boolean {
+    // regex simples: algo@algo.dominio
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return re.test(email)
   }
 }

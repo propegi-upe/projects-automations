@@ -4,17 +4,17 @@ import { HtmlCompiler } from "@/services/email-service/html-compiler"
 
 import path from "path"
 
-export interface SendClosureEmailRequest {
+export interface SendCompletedEmailRequest {
   to: string[]
   projectName: string
   companyName: string
   professorName: string
 }
 
-export class SendClosureEmailUseCase {
+export class SendCompletedEmailUseCase {
   constructor(
     private emailsService: EmailsService,
-    private htmlCompiler: HtmlCompiler<SendClosureEmailRequest>
+    private htmlCompiler: HtmlCompiler<SendCompletedEmailRequest>
   ) {}
 
   async execute({
@@ -22,8 +22,8 @@ export class SendClosureEmailUseCase {
     projectName,
     companyName,
     professorName,
-  }: SendClosureEmailRequest) {
-    const templatePath = path.resolve("src/views/templates/closure-email.hbs")
+  }: SendCompletedEmailRequest) {
+    const templatePath = path.resolve("src/views/templates/completed-email.hbs")
 
     const html = await this.htmlCompiler.generateHtml({
       object: { projectName, companyName, professorName, to },

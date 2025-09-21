@@ -1,9 +1,10 @@
 import { NodemailerEmailService } from "@/services/email-service/implementations/nodemailer-email-service"
 import { HandlebarsHtmlCompiler } from "@/services/email-service/implementations/handlebars-html-compiler"
-import { SendClosureEmailUseCase } from "@/use-cases/technological-services/send-closure-email/send-closure-email.use-case"
+import { SendCompletedEmailUseCase } from "@/use-cases/technological-services/send-completed-email/send-completed-email.use-case"
 
 import { CheckCompletedProjectsUseCase } from "@/use-cases/technological-services/check-completed-projects/check-completed-projects.use-case"
 import { ProjectsService } from "@/services/projects.service"
+import { Email } from "@/entities/email"
 
 async function main() {
   const projectsService = new ProjectsService()
@@ -12,7 +13,7 @@ async function main() {
   )
   const emailService = new NodemailerEmailService()
   const htmlCompiler = new HandlebarsHtmlCompiler()
-  const sendClosureEmailUseCase = new SendClosureEmailUseCase(
+  const sendCompletedEmailUseCase = new SendCompletedEmailUseCase(
     emailService,
     htmlCompiler
   )
@@ -51,7 +52,7 @@ async function main() {
 
         try {
           if (emailDestino) {
-            await sendClosureEmailUseCase.execute({
+            await sendCompletedEmailUseCase.execute({
               to: [emailDestino],
               projectName,
               companyName,
@@ -70,11 +71,17 @@ async function main() {
           )
 
           // Fallback: notifica sempre o CC, mesmo se o principal falhou
-          await emailService.sendFallbackToCC({
-            projectName,
-            companyName,
-            professorName,
+          const fallbackEmail = Email.create({
+            to: ["ejsilva159@gmail.com"],
+            subject: `[FALLBACK] Encerramento do projeto ${projectName}`,
+            text: `Não foi possível enviar para o professor/coordenador. Notificando apenas o CC.\n\n
+            Projeto: ${projectName}\n
+            Empresa: ${companyName}\n
+            Coordenador: ${professorName}`,
           })
+
+          await emailService.send(fallbackEmail)
+          console.warn(`Fallback enviado somente para CC`)
         }
 
         // Marca card como notificado, mesmo que tenha ido só pro CC

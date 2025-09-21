@@ -26,19 +26,24 @@ export class ProjectsService {
                     ... on DraftIssue { title body }
                   }
                   fieldValues(first: 30) {
-                    nodes {
-                      ... on ProjectV2ItemFieldSingleSelectValue {
-                        optionId
-                        name
-                        field { ... on ProjectV2SingleSelectField { name } }
+                  nodes {
+                    ... on ProjectV2ItemFieldSingleSelectValue {
+                      optionId
+                      name
+                      field {
+                        ... on ProjectV2SingleSelectField { name }
                       }
-                      ... on ProjectV2ItemFieldTextValue {
-                        text
-                        field { name }
+                    }
+                    ... on ProjectV2ItemFieldTextValue {
+                      text
+                      field {
+                        ... on ProjectV2FieldCommon { name }
                       }
-                      ... on ProjectV2ItemFieldDateValue {
-                        date
-                        field { name }
+                    }
+                    ... on ProjectV2ItemFieldDateValue {
+                      date
+                      field {
+                        ... on ProjectV2FieldCommon { name }
                       }
                     }
                   }

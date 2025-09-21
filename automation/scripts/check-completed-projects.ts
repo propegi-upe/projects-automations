@@ -1,8 +1,8 @@
 import { NodemailerEmailService } from "@/services/email-service/implementations/nodemailer-email-service"
 import { HandlebarsHtmlCompiler } from "@/services/email-service/implementations/handlebars-html-compiler"
-import { SendClosureEmailUseCase } from "@/use-cases/send-closure-email.use-case"
+import { SendClosureEmailUseCase } from "@/use-cases/technological-services/send-closure-email/send-closure-email.use-case"
 
-import { CheckCompletedProjectsUseCase } from "@/use-cases/check-completed-projects/check-completed-projects.use-case"
+import { CheckCompletedProjectsUseCase } from "@/use-cases/technological-services/check-completed-projects/check-completed-projects.use-case"
 import { ProjectsService } from "@/services/projects.service"
 
 async function main() {

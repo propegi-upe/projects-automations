@@ -3,8 +3,8 @@ import path from "path"
 import { config } from "dotenv"
 import { ProjectsService } from "../src/services/projects.service.js"
 import { saveJsonFile } from "../src/utils/save-json-file.js"
-import { GetAllTasksTechnologicalDevelopmentProjectOrgUseCase } from "@/use-cases/technological-development-projects/fetch-all-tasks-technological-development.use-case.js"
-import { GetAllTasksFinancialServicesProjectOrgUseCase } from "@/use-cases/financial-services/financial-services.use-case.js"
+import { GetAllTasksTechnologicalDevelopmentProjectOrgUseCase } from "@/use-cases/technological-services/fetch-all-tasks/fetch-all-tasks.use-case.js"
+import { GetAllTasksFinancialServicesProjectOrgUseCase } from "@/use-cases/financial-services/fetch-all-tasks/fetch-all-tasks.use-case.js"
 
 config()
 

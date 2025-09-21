@@ -1,8 +1,8 @@
 import { addDays, isAfter } from "date-fns"
-import { CheckAddendumProjectsUseCase } from "@/use-cases/check-addendum-projects/check-addendum-projects.use-case"
+import { CheckAddendumProjectsUseCase } from "@/use-cases/technological-services/check-addendum-projects/check-addendum-projects.use-case"
 import { NodemailerEmailService } from "@/services/email-service/implementations/nodemailer-email-service"
 import { HandlebarsHtmlCompiler } from "@/services/email-service/implementations/handlebars-html-compiler"
-import { SendAddendumEmailUseCase } from "@/use-cases/send-addendum-email.use-case"
+import { SendAddendumEmailUseCase } from "@/use-cases/technological-services/send-addendum-email/send-addendum-email.use-case"
 import { ProjectsService } from "@/services/projects.service"
 
 async function main() {

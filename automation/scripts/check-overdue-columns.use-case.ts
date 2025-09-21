@@ -1,9 +1,9 @@
 import { ProjectsService } from "@/services/projects.service"
-import { CheckOverduePayrollsUseCase } from "@/use-cases/check-overdue-payrolls/check-overdue-payrolls.use-case"
+import { CheckOverduePayrollsUseCase } from "@/use-cases/financial-services/check-overdue-payrolls/check-overdue-payrolls.use-case"
 import dayjs from "dayjs"
 import utc from "dayjs/plugin/utc"
 import timezone from "dayjs/plugin/timezone"
-import { SendCheckOverdueEmailUseCase } from "@/use-cases/send-email-check-overdue-columns.use-case"
+import { SendCheckOverdueEmailUseCase } from "@/use-cases/financial-services/send-email-check-overdue-columns/send-email-check-overdue-columns.use-case"
 import { NodemailerEmailService } from "@/services/email-service/implementations/nodemailer-email-service"
 import { HandlebarsHtmlCompiler } from "@/services/email-service/implementations/handlebars-html-compiler"
 

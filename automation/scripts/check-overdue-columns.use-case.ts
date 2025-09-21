@@ -128,19 +128,20 @@ async function main() {
           )
 
           const messageMap: Record<string, string> = {
-            "Em Atraso de Empenho": `Comunicamos que o processo referente ao ${card.content?.title} encontra-se em atraso de empenho, o que tem ocasionado impacto direto no cronograma de execução das atividades.
+            "Em Atraso de Empenho": `
+            <p>Comunicamos que o processo referente ao ${card.content?.title} encontra-se em atraso de empenho, o que tem impacto direto no cronograma.</p>
+            <p>Ressaltamos a importância da regularização do empenho para evitar novos reflexos nas etapas seguintes (liquidação e pagamento).</p>
+            `,
 
-            Ressaltamos a importância da regularização do empenho para evitar novos reflexos nas etapas seguintes (liquidação e pagamento).`,
-
-            "Em Atraso de Liquidação": `Informamos que o processo vinculado ao ${card.content?.title} encontra-se em atraso de liquidação,  impossibilitando o avanço para a etapa final de pagamento.
+            "Em Atraso de Liquidação": `<p>Informamos que o processo vinculado ao ${card.content?.title} encontra-se em atraso de liquidação,  impossibilitando o avanço para a etapa final de pagamento.</p>
             
-            Solicitamos a devida atenção para a regularização, a fim de assegurar a continuidade das atividades programadas e o cumprimento dos prazos pactuados.`,
+            <p>Solicitamos a devida atenção para a regularização, a fim de assegurar a continuidade das atividades programadas e o cumprimento dos prazos pactuados.</p>`,
 
-            "Em Atraso de PD": `Registramos que o processo referente ao ${card.content?.title} encontra-se em atraso de pagamento, gerando dificuldades na manutenção regular das atividades previstas.
+            "Em Atraso de PD": `<p>Registramos que o processo referente ao ${card.content?.title} encontra-se em atraso de pagamento, gerando dificuldades na manutenção regular das atividades previstas</p>.
             
-            Solicitamos especial atenção para a finalização do processo, garantindo o cumprimento das obrigações financeiras e a regularidade da execução do projeto.`,
+            <p>Solicitamos especial atenção para a finalização do processo, garantindo o cumprimento das obrigações financeiras e a regularidade da execução do projeto.</p>`,
 
-            "Em Atraso de OB": `O processo referente ao ${card.content?.title} encontra-se em atraso de OB, impactando o andamento das etapas finais.`,
+            "Em Atraso de OB": `<p>O processo referente ao ${card.content?.title} encontra-se em atraso de OB, impactando o andamento das etapas finais.</p>`,
           }
 
           await sendEmailUseCase.execute({

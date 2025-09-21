@@ -1,11 +1,6 @@
 import { FieldSchema, parseFieldValues } from "../field-parser/field-parser"
 import { env } from "../env"
-
-interface ProjectCard {
-  id: string
-  content?: { title?: string; number?: number; url?: string }
-  fieldValues: { nodes: any[] }
-}
+import { githubRequest } from "./github-api"
 
 export class ProjectsService {
   async getGroupedTasksFromProject(projectId: string, schema?: FieldSchema) {
@@ -14,7 +9,7 @@ export class ProjectsService {
     const allItems: any[] = []
 
     while (hasNextPage) {
-      const query = `
+      const query: string = `
         query {
           node(id: "${projectId}") {
             ... on ProjectV2 {
@@ -26,47 +21,24 @@ export class ProjectsService {
                 nodes {
                   id
                   content {
-                    ... on Issue {
-                      title
-                      number
-                      url
-                    }
-                    ... on PullRequest {
-                      title
-                      number
-                      url
-                    }
-                    ... on DraftIssue {
-                      title
-                      body
-                    }
+                    ... on Issue { title number url }
+                    ... on PullRequest { title number url }
+                    ... on DraftIssue { title body }
                   }
                   fieldValues(first: 30) {
                     nodes {
                       ... on ProjectV2ItemFieldSingleSelectValue {
                         optionId
                         name
-                        field {
-                          ... on ProjectV2SingleSelectField {
-                            name
-                          }
-                        }
+                        field { ... on ProjectV2SingleSelectField { name } }
                       }
                       ... on ProjectV2ItemFieldTextValue {
                         text
-                        field {
-                          ... on ProjectV2Field {
-                            name
-                          }
-                        }
+                        field { name }
                       }
                       ... on ProjectV2ItemFieldDateValue {
                         date
-                        field {
-                          ... on ProjectV2Field {
-                            name
-                          }
-                        }
+                        field { name }
                       }
                     }
                   }
@@ -77,33 +49,9 @@ export class ProjectsService {
         }
       `
 
-      const response: Response = await fetch("https://api.github.com/graphql", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${env.REPOSITORY_ACCESS_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ query }),
-      })
+      const data: any = await githubRequest<any>(query)
 
-      const json: any = await response.json()
-
-      if (json.errors) {
-        console.error(json.errors)
-        throw new Error("Erro ao buscar tarefas.")
-      }
-
-      if (!json.data || !json.data.node) {
-        console.error(
-          "Resposta inesperada do GitHub GraphQL:",
-          JSON.stringify(json, null, 2)
-        )
-        throw new Error(
-          "Não foi possível carregar o projeto. Verifique se o ID e as permissões estão corretos."
-        )
-      }
-
-      const page = json.data.node.items
+      const page: any = data.node.items
       allItems.push(...page.nodes)
 
       hasNextPage = page.pageInfo.hasNextPage
@@ -175,19 +123,6 @@ export class ProjectsService {
       }
     `
 
-    const response: Response = await fetch("https://api.github.com/graphql", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${env.REPOSITORY_ACCESS_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ query: mutation }),
-    })
-
-    const json: any = await response.json()
-    if (json.errors) {
-      console.error(json.errors)
-      throw new Error("Erro ao atualizar campo do item.")
-    }
+    await githubRequest<any>(mutation)
   }
 }

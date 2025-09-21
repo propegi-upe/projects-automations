@@ -61,38 +61,16 @@ async function main() {
         const companyName =
           checkOverdueProjectsUseCase.getTextValue(card, "🏛️ Empresa") ??
           "Empresa"
-        const emailDestino = checkOverdueProjectsUseCase.getTextValue(
-          card,
-          "✉️ E-mail"
-        )
+        const emailDestino =
+          checkOverdueProjectsUseCase.getTextValue(card, "✉️ E-mail") ?? ""
 
-        try {
-          if (emailDestino) {
-            await sendAddendumEmailUseCase.execute({
-              to: [emailDestino],
-              projectName,
-              coordinatorName,
-              companyName,
-            })
-            console.log(`Notificação de aditivo enviada para ${emailDestino}`)
-          } else {
-            console.warn(
-              `Não foi possível enviar e-mail para "${projectName}", sem campo "✉️ E-mail"`
-            )
-          }
-        } catch (err) {
-          console.error(
-            `Falha ao enviar e-mail para ${emailDestino ?? "(sem email)"}:`,
-            err
-          )
+        await sendAddendumEmailUseCase.execute({
+          to: [emailDestino],
+          projectName,
+          coordinatorName,
+          companyName,
+        })
 
-          // fallback: manda sempre para o CC
-          await emailService.sendFallbackToCC({
-            projectName,
-            companyName,
-            professorName: coordinatorName,
-          })
-        }
       }
     } catch (err) {
       console.error(`Erro inesperado no processamento do card ${card.id}:`, err)

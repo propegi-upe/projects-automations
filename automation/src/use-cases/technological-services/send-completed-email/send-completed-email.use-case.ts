@@ -70,10 +70,10 @@ export class SendCompletedEmailUseCase {
     const fallbackEmail = Email.create({
       to: ["ejsilva159@gmail.com"],
       subject: `[FALLBACK] Encerramento do projeto ${data.projectName}`,
-      text: `Não foi possível enviar para o professor/coordenador. Notificando apenas o CC.
+      text: `Não foi possível enviar para o professor. Notificando apenas o CC.
       Projeto: ${data.projectName}
       Empresa: ${data.companyName}
-      Coordenador: ${data.professorName}
+      Professor: ${data.professorName}
       ${data.reasonError}`,
     })
 

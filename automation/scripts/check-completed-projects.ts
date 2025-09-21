@@ -45,56 +45,15 @@ async function main() {
           checkCompletedProjectsUseCase.getTextValue(card, "👤 Coordenador") ??
           "Coordenador"
 
-        const emailDestino = checkCompletedProjectsUseCase.getTextValue(
-          card,
-          "✉️ E-mail"
-        )
+        const emailDestino =
+          checkCompletedProjectsUseCase.getTextValue(card, "✉️ E-mail") ?? ""
 
-        try {
-          if (emailDestino) {
-            await sendCompletedEmailUseCase.execute({
-              to: [emailDestino],
-              projectName,
-              companyName,
-              professorName,
-            })
-            console.log(`Notificação enviada para ${emailDestino}`)
-          } else {
-            console.warn(
-              `Não foi possível enviar e-mail: projeto "${projectName}" sem campo "✉️ E-mail"`
-            )
-
-          const fallbackEmail = Email.create({
-            to: ["ejsilva159@gmail.com"],
-            subject: `[FALLBACK] Encerramento do projeto ${projectName}`,
-            text: `Não foi possível enviar para o professor/coordenador. Notificando apenas o CC.\n\n
-            Projeto: ${projectName}\n
-            Empresa: ${companyName}\n
-            Coordenador: ${professorName}`,
-          })
-
-          await emailService.send(fallbackEmail)
-          console.warn(`Fallback enviado somente para CC`)
-          }
-        } catch (err) {
-          console.error(
-            `Falha ao enviar e-mail para ${emailDestino ?? "(sem email)"}:`,
-            err
-          )
-
-          // Fallback: notifica sempre o CC, mesmo se o principal falhou
-          const fallbackEmail = Email.create({
-            to: ["ejsilva159@gmail.com"],
-            subject: `[FALLBACK] Encerramento do projeto ${projectName}`,
-            text: `Não foi possível enviar para o professor/coordenador. Notificando apenas o CC.\n\n
-            Projeto: ${projectName}\n
-            Empresa: ${companyName}\n
-            Coordenador: ${professorName}`,
-          })
-
-          await emailService.send(fallbackEmail)
-          console.warn(`Fallback enviado somente para CC`)
-        }
+        await sendCompletedEmailUseCase.execute({
+          to: [emailDestino],
+          projectName,
+          companyName,
+          professorName,
+        })
 
         // Marca card como notificado, mesmo que tenha ido só pro CC
         try {

@@ -63,6 +63,18 @@ async function main() {
             console.warn(
               `Não foi possível enviar e-mail: projeto "${projectName}" sem campo "✉️ E-mail"`
             )
+
+          const fallbackEmail = Email.create({
+            to: ["ejsilva159@gmail.com"],
+            subject: `[FALLBACK] Encerramento do projeto ${projectName}`,
+            text: `Não foi possível enviar para o professor/coordenador. Notificando apenas o CC.\n\n
+            Projeto: ${projectName}\n
+            Empresa: ${companyName}\n
+            Coordenador: ${professorName}`,
+          })
+
+          await emailService.send(fallbackEmail)
+          console.warn(`Fallback enviado somente para CC`)
           }
         } catch (err) {
           console.error(

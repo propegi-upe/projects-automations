@@ -36,12 +36,12 @@ export class SendCompletedEmailUseCase {
       if (to && to.length > 0 && this.isValidEmail(to[0])) {
         const email = Email.create({ to, subject, html })
         await this.emailsService.send(email)
-        console.log(`✅ Notificação enviada para ${to}`)
+        console.log(`Notificação enviada para ${to}`)
         return
       }
 
       console.warn(
-        `⚠️ Não foi possível enviar: projeto "${projectName}" sem campo "✉️ E-mail"`
+        `Não foi possível enviar: projeto "${projectName}" sem campo "✉️ E-mail"`
       )
       const reasonError = "Motivo: E-mail vazio ou inválido"
       this.sendFallbackToCC({
@@ -78,7 +78,7 @@ export class SendCompletedEmailUseCase {
     })
 
     await this.emailsService.send(fallbackEmail)
-    console.warn(`📩 Fallback enviado somente para CC`)
+    console.warn(`Fallback enviado somente para CC`)
   }
 
   isValidEmail(email: string): boolean {

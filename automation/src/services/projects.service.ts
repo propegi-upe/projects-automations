@@ -10,7 +10,7 @@ export class ProjectsService {
 
     while (hasNextPage) {
       const query: string = `
-        query {
+      query {
           node(id: "${projectId}") {
             ... on ProjectV2 {
               items(first: 100 ${endCursor ? `, after: "${endCursor}"` : ""}) {
@@ -26,24 +26,25 @@ export class ProjectsService {
                     ... on DraftIssue { title body }
                   }
                   fieldValues(first: 30) {
-                  nodes {
-                    ... on ProjectV2ItemFieldSingleSelectValue {
-                      optionId
-                      name
-                      field {
-                        ... on ProjectV2SingleSelectField { name }
+                    nodes {
+                      ... on ProjectV2ItemFieldSingleSelectValue {
+                        optionId
+                        name
+                        field {
+                          ... on ProjectV2SingleSelectField { name }
+                        }
                       }
-                    }
-                    ... on ProjectV2ItemFieldTextValue {
-                      text
-                      field {
-                        ... on ProjectV2FieldCommon { name }
+                      ... on ProjectV2ItemFieldTextValue {
+                        text
+                        field {
+                          ... on ProjectV2FieldCommon { name }
+                        }
                       }
-                    }
-                    ... on ProjectV2ItemFieldDateValue {
-                      date
-                      field {
-                        ... on ProjectV2FieldCommon { name }
+                      ... on ProjectV2ItemFieldDateValue {
+                        date
+                        field {
+                          ... on ProjectV2FieldCommon { name }
+                        }
                       }
                     }
                   }

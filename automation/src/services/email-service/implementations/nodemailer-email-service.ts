@@ -28,7 +28,7 @@ export class NodemailerEmailService implements EmailsService {
       subject: email.subject,
       text: email.text,
       html: email.html,
-      cc: [this.ccAddress],
+      //cc: [this.ccAddress],
     })
   }
 }

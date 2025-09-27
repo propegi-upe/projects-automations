@@ -129,7 +129,7 @@ export class CheckOverduePayrollsUseCase {
         <p>Solicitamos a devida atenção para a regularização, a fim de assegurar a continuidade das atividades programadas e o cumprimento dos prazos pactuados.</p>
       `,
       "Em Atraso de PD": `
-        <p>Registramos que o processo referente ao <b>"${projectTitle}"</b> encontra-se <bEm Atraso de Pagamento</b>, gerando dificuldades na manutenção regular das atividades previstas.</p>
+        <p>Registramos que o processo referente ao <b>"${projectTitle}"</b> encontra-se <b>Em Atraso de Pagamento</b>, gerando dificuldades na manutenção regular das atividades previstas.</p>
         <p>Solicitamos especial atenção para a finalização do processo, garantindo o cumprimento das obrigações financeiras e a regularidade da execução do projeto.</p>
       `,
       "Em Atraso de OB": `

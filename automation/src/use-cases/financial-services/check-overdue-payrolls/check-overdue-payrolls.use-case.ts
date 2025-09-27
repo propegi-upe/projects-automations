@@ -121,17 +121,15 @@ export class CheckOverduePayrollsUseCase {
   private getMessage(targetStatus: string, projectTitle: string): string {
     const messageMap: Record<string, string> = {
       "Em Atraso de Empenho": `
-        <p>Prezadas,</p>
-        <p>Comunicamos que o processo referente ao <b>${projectTitle}</b> encontra-se <b>Em Atraso de Empenho</b>, o que tem ocasionado impacto direto no cronograma de execução das atividades.</p>
+        <p>Comunicamos que o processo referente ao <b>"${projectTitle}"</b> encontra-se <b>Em Atraso de Empenho</b>, o que tem ocasionado impacto direto no cronograma de execução das atividades.</p>
         <p>Ressaltamos a importância da regularização do empenho para evitar novos reflexos nas etapas seguintes (liquidação e pagamento).</p>
       `,
       "Em Atraso de Liquidação": `
-        <p>Prezadas,</p>
-        <p>Informamos que o processo vinculado ao <b>${projectTitle}</b> encontra-se em atraso de liquidação, impossibilitando o avanço para a etapa final de pagamento.</p>
+        <p>Informamos que o processo vinculado ao <b>"${projectTitle}"</b> encontra-se <b>Em Atraso de Liquidação</b>, impossibilitando o avanço para a etapa final de pagamento.</p>
         <p>Solicitamos a devida atenção para a regularização, a fim de assegurar a continuidade das atividades programadas e o cumprimento dos prazos pactuados.</p>
       `,
       "Em Atraso de PD": `
-        <p>Registramos que o processo referente ao <b>${projectTitle}</b> encontra-se em atraso de pagamento, gerando dificuldades na manutenção regular das atividades previstas.</p>
+        <p>Registramos que o processo referente ao <b>"${projectTitle}"</b> encontra-se <bEm Atraso de Pagamento</b>, gerando dificuldades na manutenção regular das atividades previstas.</p>
         <p>Solicitamos especial atenção para a finalização do processo, garantindo o cumprimento das obrigações financeiras e a regularidade da execução do projeto.</p>
       `,
       "Em Atraso de OB": `

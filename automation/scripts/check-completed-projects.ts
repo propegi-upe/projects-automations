@@ -4,7 +4,6 @@ import { SendCompletedEmailUseCase } from "@/use-cases/technological-services/se
 
 import { CheckCompletedProjectsUseCase } from "@/use-cases/technological-services/check-completed-projects/check-completed-projects.use-case"
 import { ProjectsService } from "@/services/projects.service"
-import { Email } from "@/entities/email"
 
 async function main() {
   const projectsService = new ProjectsService()

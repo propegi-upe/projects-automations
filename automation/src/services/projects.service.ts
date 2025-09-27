@@ -104,11 +104,12 @@ export class ProjectsService {
     return field?.text ?? null
   }
 
-  async updateSingleSelectField(
+  async updateFieldValue(
     projectId: string,
     itemId: string,
     fieldId: string,
-    optionId: string
+    value: string,
+    key: string
   ): Promise<void> {
     const mutation = `
       mutation {
@@ -118,7 +119,7 @@ export class ProjectsService {
             itemId: "${itemId}"
             fieldId: "${fieldId}"
             value: {
-              singleSelectOptionId: "${optionId}"
+              ${key}: "${value}"
             }
           }
         ) {

@@ -20,11 +20,12 @@ export class CheckCompletedProjectsUseCase {
   }
 
   async updateCardField(itemId: string): Promise<void> {
-    await this.projectsService.updateSingleSelectField(
+    await this.projectsService.updateFieldValue(
       this.projectId,
       itemId,
       this.statusFieldId,
-      this.optionId
+      this.optionId,
+      "singleSelectOptionId"
     )
   }
 }

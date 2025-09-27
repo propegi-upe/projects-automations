@@ -34,11 +34,12 @@ export class CheckAddendumProjectsUseCase {
       return
     }
 
-    await this.projectsService.updateSingleSelectField(
+    await this.projectsService.updateFieldValue(
       this.projectId,
       itemId,
       this.statusFieldId,
-      optionId
+      optionId,
+      "singleSelectOptionId"
     )
   }
 }

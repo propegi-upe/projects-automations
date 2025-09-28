@@ -14,36 +14,24 @@ const overdueRules: OverdueRule[] = [
     dueDateField: "Data limite para empenho",
     fallbackDateCheck: () => dayjs().date() > 24,
     targetStatus: "Em Atraso de Empenho",
-    notify: {
-      to: ["ejsilva159@gmail.com", "ejs15@discente.ifpe.edu.br"],
-    },
   },
   {
     currentStatuses: ["🔒 Empenhada"],
     dueDateField: "Data limite para liquidação",
     fallbackDateCheck: () => dayjs().date() > 28,
     targetStatus: "Em Atraso de Liquidação",
-    notify: {
-      to: ["ejsilva159@gmail.com", "ejs15@discente.ifpe.edu.br"],
-    },
   },
   {
     currentStatuses: ["🧾 Liquidada"],
     dueDateField: "Data limite de PD",
     fallbackDateCheck: () => dayjs().date() > 2,
     targetStatus: "Em Atraso de PD",
-    notify: {
-      to: ["ejsilva159@gmail.com", "ejs15@discente.ifpe.edu.br"],
-    },
   },
   {
     currentStatuses: ["🗓️ Em PD"],
     dueDateField: "Data limite para OB",
     fallbackDateCheck: () => dayjs().date() > 11,
     targetStatus: "Em Atraso de OB",
-    notify: {
-      to: ["ejsilva159@gmail.com", "ejs15@discente.ifpe.edu.br"],
-    },
   },
 ]
 

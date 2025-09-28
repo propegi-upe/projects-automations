@@ -1,4 +1,5 @@
 import { env } from "@/env"
+import { githubRequest } from "./github-api"
 
 export class GitHubProjectsService {
   //método assíncrono que recebe o nome da organização (`org`), como por exemplo "propegi-upe"
@@ -348,5 +349,70 @@ export class GitHubProjectsService {
     }
 
     return json.data.node.items.nodes
+  }
+
+  async listAll(projectId: string) {
+    let hasNextPage = true
+    let endCursor: string | null = null
+    const allItems: any[] = []
+
+    while (hasNextPage) {
+      const query: string = `
+          query {
+              node(id: "${projectId}") {
+                ... on ProjectV2 {
+                  items(first: 100 ${
+                    endCursor ? `, after: "${endCursor}"` : ""
+                  }) {
+                    pageInfo {
+                      hasNextPage
+                      endCursor
+                    }
+                    nodes {
+                      id
+                      content {
+                        ... on Issue { title number url }
+                        ... on PullRequest { title number url }
+                        ... on DraftIssue { title body }
+                      }
+                      fieldValues(first: 30) {
+                        nodes {
+                          ... on ProjectV2ItemFieldSingleSelectValue {
+                            optionId
+                            name
+                            field {
+                              ... on ProjectV2SingleSelectField { name }
+                            }
+                          }
+                          ... on ProjectV2ItemFieldTextValue {
+                            text
+                            field {
+                              ... on ProjectV2FieldCommon { name }
+                            }
+                          }
+                          ... on ProjectV2ItemFieldDateValue {
+                            date
+                            field {
+                              ... on ProjectV2FieldCommon { name }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `
+
+      const data: any = await githubRequest<any>(query)
+
+      const page: any = data.node.items
+      allItems.push(...page.nodes)
+
+      hasNextPage = page.pageInfo.hasNextPage
+      endCursor = page.pageInfo.endCursor
+    }
+    return allItems
   }
 }

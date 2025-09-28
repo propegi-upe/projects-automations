@@ -69,28 +69,35 @@ export class CheckOverduePayrollsUseCase {
 
           card.status = rule.targetStatus
 
-          // Notifica se houver regra
-          if (rule.notify?.to?.length) {
-            await this.sendEmailUseCase.execute({
-              to: rule.notify.to,
-              cc: rule.notify.cc ?? [],
-              projectName: projectTitle ?? "Projeto sem título",
-              delayedProject: rule.targetStatus,
-              message: this.getMessage(
-                rule.targetStatus,
-                card.content?.title ?? ""
-              ),
-              remetenteNome: "Augusto",
-              remetenteCargo: "Cargo/Função",
-              linkQuadro:
-                "https://github.com/orgs/propegi-upe/projects/12/views/1",
-            })
-          }
+          const emails = this.getEmails(card)
+
+      
+          await this.sendEmailUseCase.execute({
+            to: emails,
+            projectName: projectTitle ?? "Projeto sem título",
+            delayedProject: rule.targetStatus,
+            message: this.getMessage(
+              rule.targetStatus,
+              card.content?.title ?? ""
+            ),
+            remetenteNome: "Augusto",
+            remetenteCargo: "Cargo/Função",
+            linkQuadro:
+              "https://github.com/orgs/propegi-upe/projects/12/views/1",
+          })
+      
 
           break
         }
       }
     }
+  }
+
+  private getEmails(card: any): string[] {
+    const emails = this.projectsService.getTextValue(card, "Emails")
+    if (!emails) return []
+
+    return [emails]
   }
 
   private isDateOverdue(dateStr: string): boolean {

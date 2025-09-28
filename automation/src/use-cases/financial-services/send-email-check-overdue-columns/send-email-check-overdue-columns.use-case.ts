@@ -50,10 +50,14 @@ export class SendCheckOverdueEmailUseCase {
     const subject = `${delayedProject} - ${projectName}`
 
     try {
-      if (to && to.length > 0 && this.isValidEmail(to[0])) {
+      if (
+        to &&
+        to.length > 0 &&
+        to.every((email) => this.isValidEmail(email))
+      ) {
         const email = Email.create({ to, cc, subject, html })
         await this.emailsService.send(email)
-        console.log(`Notificação de atraso enviada para ${to}`)
+        console.log(`Notificação de atraso enviada para ${to.join(", ")}`)
         return
       }
 

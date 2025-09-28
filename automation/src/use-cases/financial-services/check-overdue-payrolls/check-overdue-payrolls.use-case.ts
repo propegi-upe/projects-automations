@@ -97,8 +97,12 @@ export class CheckOverduePayrollsUseCase {
     const emails = this.projectsService.getTextValue(card, "Emails")
     if (!emails) return []
 
-    return [emails]
+    return emails
+      .split(",")
+      .map((e: string) => e.trim())
+      .filter((e: string) => e.length > 0)
   }
+
 
   private isDateOverdue(dateStr: string): boolean {
     return dayjs()

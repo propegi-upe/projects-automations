@@ -70,7 +70,7 @@ export class CheckOverduePayrollsUseCase {
           card.status = rule.targetStatus
 
           const emails = this.getEmails(card)
-
+          console.log(emails)
       
           await this.sendEmailUseCase.execute({
             to: emails,

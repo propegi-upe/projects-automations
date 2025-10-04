@@ -25,6 +25,8 @@ jobs:
       # Etapa 1: Fazer checkout do código
       - name: Checkout do repositório
         uses: actions/checkout@v3
+        with:
+          ref: backups  # 👉 sempre na branch backups
 
       # Etapa 2: Setup Node.js
       - name: Setup Node.js

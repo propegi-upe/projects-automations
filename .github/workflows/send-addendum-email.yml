@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v3
+        with:
+          ref: backups # força sempre usar a branch backups
 
       - name: Setup Node.js
         uses: actions/setup-node@v3

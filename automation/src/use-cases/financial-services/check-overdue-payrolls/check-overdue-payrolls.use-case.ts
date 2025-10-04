@@ -69,7 +69,7 @@ export class CheckOverduePayrollsUseCase {
 
           card.status = rule.targetStatus
 
-          const emails = this.getEmails(card)
+          const emails = this.getEmails(card, rule.targetStatus)
           console.log(emails)
       
           await this.sendEmailUseCase.execute({
@@ -93,15 +93,27 @@ export class CheckOverduePayrollsUseCase {
     }
   }
 
-  private getEmails(card: any): string[] {
-    const emails = this.projectsService.getTextValue(card, "Emails")
-    if (!emails) return []
+ private getEmails(card: any, targetStatus: string): string[] {
+   let fieldName: string | null = null
 
-    return emails
-      .split(",")
-      .map((e: string) => e.trim())
-      .filter((e: string) => e.length > 0)
-  }
+   if (targetStatus === "Em Atraso de Empenho") {
+     fieldName = "Emails Atraso de Empenho"
+   } else if (targetStatus === "Em Atraso de Liquidação") {
+     fieldName = "Emails Atraso de Liquidação"
+   } else if (targetStatus === "Em Atraso de PD") {
+     fieldName = "Emails Atraso de Pagamento"
+   } else {
+     return [] // OB não envia email
+   }
+
+   const emails = this.projectsService.getTextValue(card, fieldName)
+   if (!emails) return []
+
+   return emails
+     .split(",")
+     .map((e: string) => e.trim())
+     .filter((e: string) => e.length > 0)
+ }
 
 
   private isDateOverdue(dateStr: string): boolean {

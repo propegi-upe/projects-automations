@@ -15,19 +15,19 @@ const getAllTasksDTProjecsUseCase =
 const getAllTasksFinancialServicesUseCase =
   new GetAllTasksFinancialServicesProjectOrgUseCase(service)
 
-// Configuração dos projetos: cada um sabe qual useCase executar
-const projects = [
-  {
+// Configuração dos projetos:
+const projectsConfig = {
+  "technological-development": {
     id: "PVT_kwDODE36584A64ML",
     dir: "technological-development",
     useCase: getAllTasksDTProjecsUseCase,
   },
-  {
+  "financial-service": {
     id: "PVT_kwDODE36584A8ZDO",
     dir: "financial-service",
     useCase: getAllTasksFinancialServicesUseCase,
   },
-]
+}
 
 const baseBackupDir = path.resolve("data/backups")
 const maxBackupFiles = 5
@@ -79,11 +79,24 @@ async function backupProject(
   }
 }
 
+// Lógica principal do script 
 const main = async () => {
-  for (const { id, dir, useCase } of projects) {
-    await removeOldBackups(dir)
-    await backupProject(id, dir, useCase)
+  // Pega o nome do projeto/diretório da variável de ambiente
+  const projectKey = process.env.PROJECT_KEY
+
+  if (
+    !projectKey ||
+    !projectsConfig[projectKey as keyof typeof projectsConfig]
+  ) {
+    console.error("Variável de ambiente PROJECT_KEY não definida ou inválida.")
+    process.exit(1)
   }
+
+  const { id, dir, useCase } =
+    projectsConfig[projectKey as keyof typeof projectsConfig]
+
+  await removeOldBackups(dir)
+  await backupProject(id, dir, useCase)
 }
 
 main()

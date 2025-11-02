@@ -1,0 +1,58 @@
+# Nome do workflow (aparece no GitHub Actions)
+name: Backup Diário PROPEGI Financeiro
+
+# Eventos que disparam o workflow:
+on:
+  # Agenda o backup para rodar automaticamente todos os dias às 03:15 UTC (21:15 BRT)
+  schedule:
+    - cron: '15 21 * * *'
+  # Permite rodar manualmente pelo botão "Run workflow"
+  workflow_dispatch:
+
+# Permissões necessárias para o workflow
+permissions:
+  contents: write # Permite fazer push (commit) no repositório
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: automation # 👉 Define o diretório padrão para os comandos
+
+    steps:
+      # Etapa 1: Fazer checkout do código
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+        with:
+          ref: backups # 👉 sempre na branch backups
+
+      # Etapa 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # Etapa 3: Instalar dependências na pasta automation
+      - name: Instalar dependências
+        run: npm ci # usa package-lock.json e integra com cache
+
+      # Etapa 4b: Executar script de backup para o projeto Financeiro
+      - name: Executar script de backup (Financeiro)
+        env:
+          REPOSITORY_ACCESS_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+          # 💡 CHAVE DO PROJETO: Deve corresponder à chave no script JS (financial-service)
+          PROJECT_KEY: financial-service
+        run: npx tsx scripts/backup.use-case.ts
+
+      # Etapa 5: Commit e push dos backups
+      - name: Commit e push dos backups
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          # 💡 APENAS o diretório do projeto Financeiro
+          git add data/backups/financial-service/
+          git commit -m "Backup diário Financeiro: $(date +'%Y-%m-%d')" || echo "Nenhuma mudança para commitar"
+          git push

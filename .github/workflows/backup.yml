@@ -40,7 +40,15 @@ jobs:
         run: npm ci     # usa package-lock.json e integra com cache
 
       # Etapa 4: Executar script de backup
-      - name: Executar script de backup
+      - name: Debug ambiente
+        run: |
+          echo "Verificando variáveis..."
+          if [ -z "$REPOSITORY_ACCESS_TOKEN" ]; then
+            echo "❌ Token não encontrado!"
+            exit 1
+          else
+            echo "✅ Token está definido (prefixo): ${REPOSITORY_ACCESS_TOKEN}"
+          fi
         env:
           REPOSITORY_ACCESS_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
         run: npx tsx scripts/backup.use-case.ts

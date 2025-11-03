@@ -97,7 +97,7 @@ export class CheckOverduePayrollsUseCase {
    let fieldName: string | null = null
 
    if (targetStatus === "Em Atraso de Empenho") {
-     fieldName = "Emails Atraso de Empenho"
+     fieldName = "Notificar em atraso de empenho"
    } else if (targetStatus === "Em Atraso de Liquidação") {
      fieldName = "Emails Atraso de Liquidação"
    } else if (targetStatus === "Em Atraso de PD") {

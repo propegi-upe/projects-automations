@@ -99,9 +99,9 @@ export class CheckOverduePayrollsUseCase {
    if (targetStatus === "Em Atraso de Empenho") {
      fieldName = "Notificar em atraso de empenho"
    } else if (targetStatus === "Em Atraso de Liquidação") {
-     fieldName = "Emails Atraso de Liquidação"
+     fieldName = "Notificar em atraso de liquidação"
    } else if (targetStatus === "Em Atraso de PD") {
-     fieldName = "Emails Atraso de Pagamento"
+     fieldName = "Notificar em atraso de pagamento"
    } else {
      return [] // OB não envia email
    }

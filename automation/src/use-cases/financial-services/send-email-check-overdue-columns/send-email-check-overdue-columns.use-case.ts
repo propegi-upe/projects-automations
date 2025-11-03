@@ -54,7 +54,7 @@ export class SendCheckOverdueEmailUseCase extends EmailSenderBaseUseCase<SendChe
     }
 
     return {
-      to: ["augusto.oliveira@upe.br"],
+      to: ["ejsilva159@gmail.com"],
       subject: `[FALLBACK] ${request.delayedProject} - ${request.projectName}`,
       data: fallbackSpecificData,
     }

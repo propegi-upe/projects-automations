@@ -1,65 +1,113 @@
-import {
-  EmailSenderBaseUseCase,
-  BaseEmailRequest,
-} from "./../../email/email-sender-base-usecase"
-// src/use-cases/email/send-check-overdue-email-usecase.ts
-
+import { Email } from "@/entities/email"
 import { EmailsService } from "@/services/email-service/emails-service"
 import { HtmlCompiler } from "@/services/email-service/html-compiler"
 
-// Estende a BaseEmailRequest para incluir os campos específicos
-export interface SendCheckOverdueEmailRequest extends BaseEmailRequest {
+import path from "path"
+
+export interface SendCheckOverdueEmailRequest {
+  to?: string[]
+  cc?: string[]
   projectName: string
   delayedProject: string
   message: string
   remetenteNome: string
   remetenteCargo: string
   linkQuadro: string
-  // O 'to' e 'cc' já estão em BaseEmailRequest
 }
 
-// Estende a classe base e especifica o tipo de Request
-export class SendCheckOverdueEmailUseCase extends EmailSenderBaseUseCase<SendCheckOverdueEmailRequest> {
-  // O constructor simplesmente chama o super com as injeções de dependência
+export class SendCheckOverdueEmailUseCase {
   constructor(
-    emailsService: EmailsService,
-    htmlCompiler: HtmlCompiler<SendCheckOverdueEmailRequest>
-  ) {
-    super(emailsService, htmlCompiler)
-  }
+    private emailsService: EmailsService,
+    private htmlCompiler: HtmlCompiler<SendCheckOverdueEmailRequest>
+  ) {}
 
-  // 1. Implementação do Assunto Específico
-  protected getSubject(request: SendCheckOverdueEmailRequest): string {
-    return `${request.delayedProject} - ${request.projectName}`
-  }
+  async execute({
+    to,
+    cc,
+    projectName,
+    delayedProject,
+    message,
+    remetenteNome,
+    remetenteCargo,
+    linkQuadro,
+  }: SendCheckOverdueEmailRequest) {
+    const templatePath = path.resolve("src/views/templates/overdue-columns.hbs")
 
-  // 2. Implementação do Template Path Específico
-  protected getTemplatePath(): string {
-    return "src/views/templates/overdue-columns.hbs"
-  }
+    const html = await this.htmlCompiler.generateHtml({
+      object: {
+        projectName,
+        delayedProject,
+        message,
+        remetenteNome,
+        remetenteCargo,
+        to,
+        cc,
+        linkQuadro,
+      },
+      templatePath,
+    })
 
-  // 3. Implementação dos Dados de Fallback Específicos
-  protected getFallbackData(
-    request: SendCheckOverdueEmailRequest,
-    reasonError: string
-  ) {
-    // CORREÇÃO: Usar a chave 'projectName' para satisfazer FallbackData
-    const fallbackSpecificData = {
-      // A chave precisa ser 'projectName' para satisfazer a interface da classe base
-      projectName: request.projectName,
-      "Etapa em atraso": request.delayedProject,
-      "Responsável (Nome)": request.remetenteNome,
-      "Responsável (Cargo)": request.remetenteCargo,
-      reasonError,
+    const subject = `${delayedProject} - ${projectName}`
+
+    try {
+      if (
+        to &&
+        to.length > 0 &&
+        to.every((email) => this.isValidEmail(email))
+      ) {
+        const email = Email.create({ to, cc, subject, html })
+        await this.emailsService.send(email)
+        console.log(`Notificação de atraso enviada para ${to.join(", ")}`)
+        return
+      }
+
+      console.warn(
+        `Não foi possível enviar: projeto "${projectName}" sem campo "✉️ E-mail"`
+      )
+      const reasonError = "Motivo: E-mail vazio ou inválido"
+      this.sendFallbackToCC({
+        projectName,
+        delayedProject,
+        remetenteNome,
+        remetenteCargo,
+        reasonError,
+      })
+    } catch (error) {
+      const reasonError = "Motivo: erro inesperado no envio"
+      this.sendFallbackToCC({
+        projectName,
+        delayedProject,
+        remetenteNome,
+        remetenteCargo,
+        reasonError,
+      })
     }
+  }
 
-    return {
+  async sendFallbackToCC(data: {
+    projectName: string
+    delayedProject: string
+    remetenteNome: string
+    remetenteCargo: string
+    reasonError?: string
+  }): Promise<void> {
+    const fallbackEmail = Email.create({
       to: ["ejsilva159@gmail.com"],
-      subject: `[FALLBACK] ${request.delayedProject} - ${request.projectName}`,
-      data: fallbackSpecificData,
-    }
+      subject: `[FALLBACK] ${data.delayedProject} - ${data.projectName}`,
+      text: `Não foi possível enviar para os destinatários principais. Notificando apenas o CC.
+      Projeto: ${data.projectName}
+      Etapa em atraso: ${data.delayedProject}
+      Responsável: ${data.remetenteNome} (${data.remetenteCargo})
+      ${data.reasonError}`,
+    })
+
+    await this.emailsService.send(fallbackEmail)
+    console.warn(`Fallback enviado somente para CC`)
   }
 
-  // OBS: O método 'execute' e toda a lógica de envio/fallback
-  // são herdados e executados pela classe base!
+  isValidEmail(email: string): boolean {
+    // regex simples: algo@algo.dominio
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return re.test(email)
+  }
 }

@@ -37,7 +37,7 @@ export class SendCompletedEmailUseCase extends EmailSenderBaseUseCase<SendComple
     reasonError: string
   ) {
     return {
-      to: ["ejsilva159@gmail.com"], // Fallback hardcoded
+      to: ["augusto.oliveira@upe.br"], // Fallback hardcoded
       subject: `[FALLBACK] Encerramento do projeto ${request.projectName}`,
       data: {
         projectName: request.projectName,

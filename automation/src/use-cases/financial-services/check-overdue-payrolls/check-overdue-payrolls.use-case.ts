@@ -155,9 +155,6 @@ export class CheckOverduePayrollsUseCase {
         <p>Registramos que o processo referente ao <b>"${projectTitle}"</b> encontra-se <b>Em Atraso de Pagamento</b>, gerando dificuldades na manutenção regular das atividades previstas.</p>
         <p>Solicitamos especial atenção para a finalização do processo, garantindo o cumprimento das obrigações financeiras e a regularidade da execução do projeto.</p>
       `,
-      "Em Atraso de OB": `
-        <p>O processo referente ao ${projectTitle} encontra-se em atraso de OB.</p>
-      `,
     }
     return messageMap[targetStatus] ?? ""
   }

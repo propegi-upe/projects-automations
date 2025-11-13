@@ -1,6 +1,7 @@
 [
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgdtHQ0",
+    "projectName": "Card para enviar email aditivo com projeto com 30 dias para vencer",
     "Segmento": null,
     "Status": "A Vencer",
     "StatusOptionId": "c9370880",
@@ -32,6 +33,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgeJs94",
+    "projectName": "Teste Fallback sem email",
     "Segmento": null,
     "Status": "Finalizado ✅",
     "StatusOptionId": "deeb62cf",
@@ -63,6 +65,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgdtLaw",
+    "projectName": "Teste Fallback com email errado (tentando gerar erro pra cair no catch)",
     "Segmento": null,
     "Status": "Finalizado ✅",
     "StatusOptionId": "deeb62cf",
@@ -94,6 +97,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgeaoLM",
+    "projectName": "Projeto de Pintura do IIT",
     "Segmento": null,
     "Status": "Finalizado ✅",
     "StatusOptionId": "deeb62cf",
@@ -125,6 +129,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgeZQh0",
+    "projectName": "Projeto de automação industrial",
     "Segmento": null,
     "Status": "Finalizado ✅",
     "StatusOptionId": "deeb62cf",
@@ -156,6 +161,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgbOY6w",
+    "projectName": "Adicionar os atributos `setor` e `segmento` como campo de preenchimento no `card` do quadro",
     "Segmento": null,
     "Status": "Finalizado ✅",
     "StatusOptionId": "deeb62cf",
@@ -187,6 +193,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgbOY6s",
+    "projectName": "Adicionar campo de resposta com escala TRE no `Formulário de Encerramento de Projeto`",
     "Segmento": null,
     "Status": "Backlog",
     "StatusOptionId": "0dee7f3d",
@@ -218,6 +225,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgbOY6o",
+    "projectName": "📧 Modelos de e-mail institucional",
     "Segmento": null,
     "Status": "Backlog",
     "StatusOptionId": "0dee7f3d",
@@ -249,6 +257,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgbOY6k",
+    "projectName": "Mapear o prédio do IIT com suas salas e respectivos responsáveis",
     "Segmento": null,
     "Status": "Backlog",
     "StatusOptionId": "0dee7f3d",
@@ -280,6 +289,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgeJtVs",
+    "projectName": "Projeto teste vídeo",
     "Segmento": null,
     "Status": "A Vencer",
     "StatusOptionId": "c9370880",
@@ -311,6 +321,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzggoII0",
+    "projectName": "Projeto teste de email finalizado",
     "Segmento": null,
     "Status": "Finalizado ✅",
     "StatusOptionId": "deeb62cf",

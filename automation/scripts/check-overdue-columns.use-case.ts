@@ -29,7 +29,7 @@ const overdueRules: OverdueRule[] = [
   },
   {
     currentStatuses: ["🗓️ Em PD"],
-    dueDateField: "Data limite para OB",
+    dueDateField: "Data limite de OB",
     fallbackDateCheck: () => dayjs().date() > 11,
     targetStatus: "Em Atraso de OB",
   },

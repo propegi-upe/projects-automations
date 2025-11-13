@@ -74,6 +74,7 @@ export class ProjectsService {
       const parsed = parseFieldValues(item.fieldValues.nodes, schema)
       return {
         Projeto_ID: item.id,
+        projectName: item.content?.title ?? "Projeto sem título",
         ...parsed,
       }
     })

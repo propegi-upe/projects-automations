@@ -1,6 +1,7 @@
 [
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgdtHQ0",
+    "projectName": "Card para enviar email aditivo com projeto com 30 dias para vencer",
     "Segmento": null,
     "Status": "A Vencer",
     "StatusOptionId": "c9370880",
@@ -27,11 +28,12 @@
     "Publicação": null,
     "Link de acesso ao PTA": null,
     "InícioData": null,
-    "TérminoData": "2025-11-04",
+    "TérminoData": "2025-12-02",
     "Ano do Projeto": null
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgeJs94",
+    "projectName": "Teste Fallback sem email",
     "Segmento": null,
     "Status": "Finalizado ✅",
     "StatusOptionId": "deeb62cf",
@@ -63,6 +65,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgdtLaw",
+    "projectName": "Teste Fallback com email errado (tentando gerar erro pra cair no catch)",
     "Segmento": null,
     "Status": "Finalizado ✅",
     "StatusOptionId": "deeb62cf",
@@ -94,6 +97,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgeaoLM",
+    "projectName": "Projeto de Pintura do IIT",
     "Segmento": null,
     "Status": "Finalizado ✅",
     "StatusOptionId": "deeb62cf",
@@ -125,6 +129,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgeZQh0",
+    "projectName": "Projeto de automação industrial",
     "Segmento": null,
     "Status": "Finalizado ✅",
     "StatusOptionId": "deeb62cf",
@@ -156,6 +161,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgbOY6w",
+    "projectName": "Adicionar os atributos `setor` e `segmento` como campo de preenchimento no `card` do quadro",
     "Segmento": null,
     "Status": "Finalizado ✅",
     "StatusOptionId": "deeb62cf",
@@ -187,6 +193,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgbOY6s",
+    "projectName": "Adicionar campo de resposta com escala TRE no `Formulário de Encerramento de Projeto`",
     "Segmento": null,
     "Status": "Backlog",
     "StatusOptionId": "0dee7f3d",
@@ -218,6 +225,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgbOY6o",
+    "projectName": "📧 Modelos de e-mail institucional",
     "Segmento": null,
     "Status": "Backlog",
     "StatusOptionId": "0dee7f3d",
@@ -249,6 +257,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgbOY6k",
+    "projectName": "Mapear o prédio do IIT com suas salas e respectivos responsáveis",
     "Segmento": null,
     "Status": "Backlog",
     "StatusOptionId": "0dee7f3d",
@@ -280,6 +289,7 @@
   },
   {
     "Projeto_ID": "PVTI_lADODE36584A64MLzgeJtVs",
+    "projectName": "Projeto teste vídeo",
     "Segmento": null,
     "Status": "A Vencer",
     "StatusOptionId": "c9370880",
@@ -307,6 +317,38 @@
     "Link de acesso ao PTA": null,
     "InícioData": null,
     "TérminoData": "2025-09-27",
+    "Ano do Projeto": null
+  },
+  {
+    "Projeto_ID": "PVTI_lADODE36584A64MLzggoII0",
+    "projectName": "Projeto teste de email finalizado",
+    "Segmento": null,
+    "Status": "Finalizado ✅",
+    "StatusOptionId": "deeb62cf",
+    "Interveniência com o IA-UPE": null,
+    "Convênio ou acordo": null,
+    "Edital": null,
+    "Acordo/convênio n.º": null,
+    "Aditivo n.º": null,
+    "Tipo de aditivo": null,
+    "Empresa": "Empresa MAR CIO",
+    "CNPJ": null,
+    "Coordenador": "Marcio",
+    "E-mail": "ejsilva159@gmail.com",
+    "Telefone": null,
+    "SEI": null,
+    "Valor pactuado": null,
+    "Valor repassado": null,
+    "Valor executado": null,
+    "Valor contrapartida": null,
+    "Valor agência": null,
+    "Valor unidade": null,
+    "Valor IA-UPE": null,
+    "Data publicação": null,
+    "Publicação": null,
+    "Link de acesso ao PTA": null,
+    "InícioData": null,
+    "TérminoData": null,
     "Ano do Projeto": null
   }
 ]

@@ -27,7 +27,7 @@
     "Publicação": null,
     "Link de acesso ao PTA": null,
     "InícioData": null,
-    "TérminoData": "2025-11-04",
+    "TérminoData": "2025-12-02",
     "Ano do Projeto": null
   },
   {
@@ -307,6 +307,37 @@
     "Link de acesso ao PTA": null,
     "InícioData": null,
     "TérminoData": "2025-09-27",
+    "Ano do Projeto": null
+  },
+  {
+    "Projeto_ID": "PVTI_lADODE36584A64MLzggoII0",
+    "Segmento": null,
+    "Status": "Finalizado ✅",
+    "StatusOptionId": "deeb62cf",
+    "Interveniência com o IA-UPE": null,
+    "Convênio ou acordo": null,
+    "Edital": null,
+    "Acordo/convênio n.º": null,
+    "Aditivo n.º": null,
+    "Tipo de aditivo": null,
+    "Empresa": "Empresa MAR CIO",
+    "CNPJ": null,
+    "Coordenador": "Marcio",
+    "E-mail": "ejsilva159@gmail.com",
+    "Telefone": null,
+    "SEI": null,
+    "Valor pactuado": null,
+    "Valor repassado": null,
+    "Valor executado": null,
+    "Valor contrapartida": null,
+    "Valor agência": null,
+    "Valor unidade": null,
+    "Valor IA-UPE": null,
+    "Data publicação": null,
+    "Publicação": null,
+    "Link de acesso ao PTA": null,
+    "InícioData": null,
+    "TérminoData": null,
     "Ano do Projeto": null
   }
 ]

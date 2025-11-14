@@ -2,12 +2,12 @@ import { ProjectsService } from "@/services/projects.service"
 
 export class CheckAddendumProjectsUseCase {
   private statusOptionIds: Record<string, string> = {
-    "Em Andamento 🔄": "511501b7",
-    "A Vencer": "c9370880",
+    "🔄 Em Andamento": "511501b7",
+    "🚨 A Vencer": "c9370880",
   }
 
-  private statusFieldId = "PVTSSF_lADODE36584A64MLzgvV8uc"
-  private projectId = "PVT_kwDODE36584A64ML"
+  private statusFieldId = "PVTSSF_lADODE36584A2EknzgrcBTc"
+  private projectId = "PVT_kwDODE36584A2Ekn"
 
   constructor(private projectsService: ProjectsService) {}
 

@@ -7,7 +7,10 @@ dotenv.config()
 
 export class NodemailerEmailService implements EmailsService {
   private transporter: Transporter
-  private readonly ccAddress = "augusto.oliveira@upe.br"
+  private readonly ccAddress = [
+    "augusto.oliveira@upe.br",
+    "marcia.macedo@upe.br",
+  ]
 
   constructor() {
     this.transporter = nodemailer.createTransport({
@@ -28,7 +31,7 @@ export class NodemailerEmailService implements EmailsService {
       subject: email.subject,
       text: email.text,
       html: email.html,
-      cc: [this.ccAddress],
+      cc: this.ccAddress,
     })
   }
 }

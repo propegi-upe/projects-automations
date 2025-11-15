@@ -26,7 +26,7 @@ async function main() {
         checkCompletedProjectsUseCase.getSingleSelectValue(card, "Status") ??
         "Sem status"
 
-      if (status !== "Finalizado ✅") continue
+      if (status !== "✅ Finalizado") continue
 
       const notificado = checkCompletedProjectsUseCase.getSingleSelectValue(
         card,

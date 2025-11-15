@@ -33,6 +33,8 @@ async function main() {
         "Notificado finalização"
       )
 
+      console.log(notificado)
+
       if (!notificado || notificado === "false") {
         console.log(`🔔 Projeto "${card.content?.title}" ainda não notificado.`)
 

@@ -16,8 +16,11 @@ export class CheckOverduePayrollsUseCase {
     "Em Atraso de OB": "1c0ce8b2",
   }
 
-  private statusFieldId = "PVTSSF_lADODE36584A8ZDOzgwZ5bI"
-  private projectId = "PVT_kwDODE36584A8ZDO"
+  private statusFieldId = "PVTSSF_lADODE36584BGxiszg3uO_o"
+  private projectId = "PVT_kwDODE36584BGxis"
+
+  private statusFieldId_test = "PVTSSF_lADODE36584A8ZDOzgwZ5bI"
+  private projectId_test = "PVT_kwDODE36584A8ZDO"
 
   constructor(
     private projectsService: ProjectsService,

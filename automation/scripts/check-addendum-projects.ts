@@ -27,7 +27,7 @@ async function main() {
         "Sem status"
 
       // só interessa quando está em andamento
-      if (status !== "Em Andamento 🔄") continue
+      if (status !== "🔄 Em Andamento") continue
 
       // pega a data de término
       const endDateStr = checkOverdueProjectsUseCase.getDateValue(
@@ -47,7 +47,7 @@ async function main() {
         try {
           await checkOverdueProjectsUseCase.updateStatusOfItem(
             card.id,
-            "A Vencer"
+            "🚨 A Vencer"
           )
           console.log(` Card ${card.id} atualizado para "A Vencer".`)
         } catch (err) {
@@ -61,7 +61,7 @@ async function main() {
         const companyName =
           checkOverdueProjectsUseCase.getTextValue(card, "🏛️ Empresa") ??
           "Empresa"
-          
+
         let rawEmails =
           checkOverdueProjectsUseCase.getTextValue(card, "✉️ E-mail") ?? ""
 

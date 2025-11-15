@@ -35,11 +35,19 @@ export class SendAddendumEmailUseCase {
     const subject = `🔔 [Projeto a Vencer] ${projectName} - Aditivo de Prorrogação de Prazo`
 
     try {
-      if (to && to.length > 0 && this.isValidEmail(to[0])) {
-        const email = Email.create({ to, subject, html })
-        await this.emailsService.send(email)
-        console.log(`Notificação enviada para ${to}`)
-        return
+      if (to && to.length > 0) {
+        const validEmails = to.filter((e) => this.isValidEmail(e))
+
+        if (validEmails.length > 0) {
+          const email = Email.create({
+            to: validEmails,
+            subject,
+            html,
+          })
+          await this.emailsService.send(email)
+          console.log(`Notificação enviada para: ${validEmails.join(", ")}`)
+          return
+        }
       }
 
       console.warn(
@@ -71,7 +79,7 @@ export class SendAddendumEmailUseCase {
     reasonError?: string
   }): Promise<void> {
     const fallbackEmail = Email.create({
-      to: ["ejsilva159@gmail.com"],
+      to: ["augusto.oliveira@upe.br"],
       subject: `[FALLBACK] E-mail de aditivo ${data.projectName}`,
       text: `Não foi possível enviar para o coordenador. Notificando apenas o CC.
       Projeto: ${data.projectName}

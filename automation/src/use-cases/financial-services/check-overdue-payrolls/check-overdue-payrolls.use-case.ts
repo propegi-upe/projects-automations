@@ -69,52 +69,49 @@ export class CheckOverduePayrollsUseCase {
 
           card.status = rule.targetStatus
 
-          const emails = this.getEmails(card, rule.targetStatus)
-          console.log(emails)
-      
-          await this.sendEmailUseCase.execute({
-            to: emails,
-            projectName: projectTitle ?? "Projeto sem título",
-            delayedProject: rule.targetStatus,
-            message: this.getMessage(
-              rule.targetStatus,
-              card.content?.title ?? ""
-            ),
-            remetenteNome: "Augusto",
-            remetenteCargo: "Cargo/Função",
-            linkQuadro:
-              "https://github.com/orgs/propegi-upe/projects/12/views/1",
-          })
-      
+          if (rule.targetStatus !== "Em Atraso de OB") {
+            const emails = this.getEmails(card, rule.targetStatus)
+            console.log(emails)
 
+            await this.sendEmailUseCase.execute({
+              to: emails,
+              projectName: projectTitle ?? "Projeto sem título",
+              delayedProject: rule.targetStatus,
+              message: this.getMessage(
+                rule.targetStatus,
+                card.content?.title ?? ""
+              ),
+              linkQuadro:
+                "https://github.com/orgs/propegi-upe/projects/12/views/1",
+            })
+          }
           break
         }
       }
     }
   }
 
- private getEmails(card: any, targetStatus: string): string[] {
-   let fieldName: string | null = null
+  private getEmails(card: any, targetStatus: string): string[] {
+    let fieldName: string | null = null
 
-   if (targetStatus === "Em Atraso de Empenho") {
-     fieldName = "Notificar em atraso de empenho"
-   } else if (targetStatus === "Em Atraso de Liquidação") {
-     fieldName = "Notificar em atraso de liquidação"
-   } else if (targetStatus === "Em Atraso de PD") {
-     fieldName = "Notificar em atraso de pagamento"
-   } else {
-     return [] // OB não envia email
-   }
+    if (targetStatus === "Em Atraso de Empenho") {
+      fieldName = "Notificar em atraso de empenho"
+    } else if (targetStatus === "Em Atraso de Liquidação") {
+      fieldName = "Notificar em atraso de liquidação"
+    } else if (targetStatus === "Em Atraso de PD") {
+      fieldName = "Notificar em atraso de pagamento"
+    } else {
+      return [] // OB não envia email
+    }
 
-   const emails = this.projectsService.getTextValue(card, fieldName)
-   if (!emails) return []
+    const emails = this.projectsService.getTextValue(card, fieldName)
+    if (!emails) return []
 
-   return emails
-     .split(",")
-     .map((e: string) => e.trim())
-     .filter((e: string) => e.length > 0)
- }
-
+    return emails
+      .split(",")
+      .map((e: string) => e.trim())
+      .filter((e: string) => e.length > 0)
+  }
 
   private isDateOverdue(dateStr: string): boolean {
     return dayjs()
@@ -154,9 +151,6 @@ export class CheckOverduePayrollsUseCase {
       "Em Atraso de PD": `
         <p>Registramos que o processo referente ao <b>"${projectTitle}"</b> encontra-se <b>Em Atraso de Pagamento</b>, gerando dificuldades na manutenção regular das atividades previstas.</p>
         <p>Solicitamos especial atenção para a finalização do processo, garantindo o cumprimento das obrigações financeiras e a regularidade da execução do projeto.</p>
-      `,
-      "Em Atraso de OB": `
-        <p>O processo referente ao ${projectTitle} encontra-se em atraso de OB.</p>
       `,
     }
     return messageMap[targetStatus] ?? ""

@@ -10,8 +10,6 @@ export interface SendCheckOverdueEmailRequest {
   projectName: string
   delayedProject: string
   message: string
-  remetenteNome: string
-  remetenteCargo: string
   linkQuadro: string
 }
 
@@ -27,8 +25,6 @@ export class SendCheckOverdueEmailUseCase {
     projectName,
     delayedProject,
     message,
-    remetenteNome,
-    remetenteCargo,
     linkQuadro,
   }: SendCheckOverdueEmailRequest) {
     const templatePath = path.resolve("src/views/templates/overdue-columns.hbs")
@@ -38,8 +34,6 @@ export class SendCheckOverdueEmailUseCase {
         projectName,
         delayedProject,
         message,
-        remetenteNome,
-        remetenteCargo,
         to,
         cc,
         linkQuadro,
@@ -50,15 +44,19 @@ export class SendCheckOverdueEmailUseCase {
     const subject = `${delayedProject} - ${projectName}`
 
     try {
-      if (
-        to &&
-        to.length > 0 &&
-        to.every((email) => this.isValidEmail(email))
-      ) {
-        const email = Email.create({ to, cc, subject, html })
-        await this.emailsService.send(email)
-        console.log(`Notificação de atraso enviada para ${to.join(", ")}`)
-        return
+      if (to && to.length > 0) {
+        const validEmails = to.filter((e) => this.isValidEmail(e))
+
+        if (validEmails.length > 0) {
+          const email = Email.create({
+            to: validEmails,
+            subject,
+            html,
+          })
+          await this.emailsService.send(email)
+          console.log(`Notificação enviada para: ${validEmails.join(", ")}`)
+          return
+        }
       }
 
       console.warn(
@@ -68,8 +66,6 @@ export class SendCheckOverdueEmailUseCase {
       this.sendFallbackToCC({
         projectName,
         delayedProject,
-        remetenteNome,
-        remetenteCargo,
         reasonError,
       })
     } catch (error) {
@@ -77,8 +73,6 @@ export class SendCheckOverdueEmailUseCase {
       this.sendFallbackToCC({
         projectName,
         delayedProject,
-        remetenteNome,
-        remetenteCargo,
         reasonError,
       })
     }
@@ -87,17 +81,14 @@ export class SendCheckOverdueEmailUseCase {
   async sendFallbackToCC(data: {
     projectName: string
     delayedProject: string
-    remetenteNome: string
-    remetenteCargo: string
     reasonError?: string
   }): Promise<void> {
     const fallbackEmail = Email.create({
-      to: ["ejsilva159@gmail.com"],
+      to: ["augusto.oliveira@upe.br"],
       subject: `[FALLBACK] ${data.delayedProject} - ${data.projectName}`,
       text: `Não foi possível enviar para os destinatários principais. Notificando apenas o CC.
       Projeto: ${data.projectName}
       Etapa em atraso: ${data.delayedProject}
-      Responsável: ${data.remetenteNome} (${data.remetenteCargo})
       ${data.reasonError}`,
     })
 

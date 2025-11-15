@@ -20,8 +20,8 @@ const schema: FieldSchema = {
 export class IncrementOverdueUseCase {
   constructor(private projectService: ProjectsService) {}
 
-  private projectId = "PVT_kwDODE36584A8ZDO"; 
-  private statusFieldId = "PVTF_lADODE36584A8ZDOzgwZ5cY"
+  private projectId = "PVT_kwDODE36584A8ZDO"
+  private statusFieldId = "PVTSSF_lADODE36584A8ZDOzgwZ5bI"
 
   async execute() {
     const grouped = await this.projectService.getGroupedTasksFromProject(
@@ -30,36 +30,34 @@ export class IncrementOverdueUseCase {
     )
 
     const overdueTasks = Object.entries(grouped)
-        .filter(([status]) => status.startsWith("🚨 Em Atraso"))
-        .flatMap(([_, tasks]) => tasks)
+      .filter(([status]) => status.startsWith("🚨 Em Atraso"))
+      .flatMap(([_, tasks]) => tasks)
 
-    console.log(`Encontradas ${overdueTasks.length} tarefas em atraso`);
+    console.log(`Encontradas ${overdueTasks.length} tarefas em atraso`)
 
-      for (const task of overdueTasks as Record<string, any>[]) {
-        const days = parseInt(task.diasEmAtraso) || 0
-        const newValue = days + 1
+    for (const task of overdueTasks as Record<string, any>[]) {
+      const days = parseInt(task.diasEmAtraso) || 0
+      const newValue = days + 1
 
-        console.log(
+      console.log(
         `Atualizando tarefa ${task.title} de ${days} para ${newValue} dias em atraso`
-        )
+      )
 
-        await this.updateStatusOfItem(task.id, newValue.toString())
-
+      await this.updateStatusOfItem(task.id, newValue.toString())
     }
-    console.log("Atualização concluída.");
+    console.log("Atualização concluída.")
   }
 
-    private async updateStatusOfItem(
-        itemId: string,
-        newValue: string
-    ): Promise<void> {
-        await this.projectService.updateFieldValue(
-        this.projectId,
-        itemId,
-        this.statusFieldId,
-        newValue,
-        "text"
-        )
-    }
-
+  private async updateStatusOfItem(
+    itemId: string,
+    newValue: string
+  ): Promise<void> {
+    await this.projectService.updateFieldValue(
+      this.projectId,
+      itemId,
+      this.statusFieldId,
+      newValue,
+      "text"
+    )
+  }
 }

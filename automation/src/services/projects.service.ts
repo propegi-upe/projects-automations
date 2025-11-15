@@ -73,8 +73,8 @@ export class ProjectsService {
     const tasks = allItems.map((item: any) => {
       const parsed = parseFieldValues(item.fieldValues.nodes, schema)
       return {
-        Projeto_ID: item.id,
-        projeto: item.content?.title ?? "Projeto sem título",
+        projetoId: item.id,
+        nomeProjeto: item.content?.title ?? "Projeto sem título",
         ...parsed,
       }
     })

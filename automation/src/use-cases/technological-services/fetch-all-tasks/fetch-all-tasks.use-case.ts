@@ -2,42 +2,44 @@ import { FieldSchema } from "@/field-parser/field-parser"
 import { ProjectsService } from "@/services/projects.service"
 
 const schema: FieldSchema = {
-  Segmento: { fieldName: "Segmento", type: "singleSelect" },
-  Status: { fieldName: "Status", type: "singleSelect" },
-  "Interveniência com o IA-UPE": {
+  segmento: { fieldName: "Segmento", type: "singleSelect" },
+  status: { fieldName: "Status", type: "singleSelect" },
+  intervenienciaComOIAUPE: {
     fieldName: "📁 Interveniência com o IAUPE",
-    type: "text",
+    type: "singleSelect",
   },
-  "Convênio ou acordo": { fieldName: "🤝 Convênio ou acordo", type: "text" },
-  Edital: { fieldName: "Edital", type: "text" },
-  "Acordo/convênio n.º": { fieldName: "Acordo/convênio n.º", type: "text" },
-  "Aditivo n.º": { fieldName: "Aditivo n.º", type: "text" },
-  "Tipo de aditivo": { fieldName: "Tipo de aditivo", type: "text" },
-  Empresa: { fieldName: "🏛️ Empresa", type: "text" },
-  CNPJ: { fieldName: "🧾 CNPJ", type: "text" },
-  Coordenador: { fieldName: "👤 Coordenador", type: "text" },
-  "E-mail": { fieldName: "✉️ E-mail", type: "text" },
-  Telefone: { fieldName: "📞 Telefone", type: "text" },
-  SEI: { fieldName: "SEI", type: "text" },
-  "Valor pactuado": { fieldName: "💰 🔴 Valor pactuado", type: "text" },
-  "Valor repassado": { fieldName: "💸 🔴 Valor repassado", type: "text" },
-  "Valor executado": { fieldName: "📉 🔴 Valor executado", type: "text" },
-  "Valor contrapartida": {
+  convenioOuAcordo: {
+    fieldName: "🤝 Convênio ou acordo",
+    type: "singleSelect",
+  },
+  edital: { fieldName: "Edital", type: "singleSelect" },
+  acordoConvenioNumero: { fieldName: "Acordo/convênio n.º", type: "text" },
+  aditivoNumero: { fieldName: "Aditivo n.º", type: "text" },
+  tipoDeAditivo: { fieldName: "Tipo de aditivo", type: "text" },
+  empresa: { fieldName: "🏛️ Empresa", type: "text" },
+  cnpj: { fieldName: "🧾 CNPJ", type: "text" },
+  coordenador: { fieldName: "👤 Coordenador", type: "text" },
+  email: { fieldName: "✉️ E-mail", type: "text" },
+  telefone: { fieldName: "📞 Telefone", type: "text" },
+  sei: { fieldName: "SEI", type: "text" },
+  valorPactuado: { fieldName: "💰 🔴 Valor pactuado", type: "text" },
+  valorRepassado: { fieldName: "💸 🔴 Valor repassado", type: "text" },
+  valorExecutado: { fieldName: "📉 🔴 Valor executado", type: "text" },
+  valorContrapartida: {
     fieldName: "🔄 🔴 Valor contrapartida",
     type: "text",
   },
-  "Valor agência": { fieldName: "💵 🔵 Valor agência", type: "text" },
-  "Valor unidade": { fieldName: "💵 🔵 Valor unidade", type: "text" },
-  "Valor IA-UPE": { fieldName: "💵 🔵 Valor IAUPE", type: "text" },
-  "Data publicação": { fieldName: "📅 Data publicação", type: "date" },
-  Publicação: { fieldName: "📢 Publicação", type: "text" },
-  "Link de acesso ao PTA": {
+  valorAgencia: { fieldName: "💵 🔵 Valor agência", type: "text" },
+  valorUnidade: { fieldName: "💵 🔵 Valor unidade", type: "text" },
+  valorIAUPE: { fieldName: "💵 🔵 Valor IAUPE", type: "text" },
+  dataPublicacao: { fieldName: "📅 Data publicação", type: "date" },
+  publicacao: { fieldName: "📢 Publicação", type: "text" },
+  linkDeAcessoAoPTA: {
     fieldName: "🔗 Link de acesso ao PTA",
     type: "text",
   },
-  InícioData: { fieldName: "🗓️ Início", type: "date" },
-  TérminoData: { fieldName: "📅 Término", type: "date" },
-  "Ano do Projeto": { fieldName: "Ano do Projeto", type: "text" },
+  inicioData: { fieldName: "🗓️ Início", type: "date" },
+  terminoData: { fieldName: "📅 Término", type: "date" },
 }
 
 // Lista todas as tasks de um projeto com organização
@@ -45,9 +47,24 @@ export class GetAllTasksTechnologicalDevelopmentProjectOrgUseCase {
   constructor(private projectService: ProjectsService) {}
 
   async execute(projectId: string) {
-    return await this.projectService.getGroupedTasksFromProject(
+    const data = await this.projectService.getGroupedTasksFromProject(
       projectId,
       schema
     )
+    // 1. Pegar todos os campos singleSelect do schema
+    const singleSelectKeys = Object.keys(schema)
+      .filter((key) => schema[key].type === "singleSelect")
+      .map((key) => `${key}OptionId`)
+
+    // 2. Remover dinamicamente todos os OptionId
+    for (const key of singleSelectKeys) {
+      if (key in data) {
+        delete data[key as any]
+      }
+    }
+
+    return data
   }
 }
+
+

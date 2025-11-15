@@ -1,7 +1,7 @@
 import { ProjectsService } from "@/services/projects.service"
 
 export class CheckCompletedProjectsUseCase {
-  private statusFieldId = "PVTSSF_lADODE36584A2EknzgrcBTc"
+  private statusFieldId = "PVTSSF_lADODE36584A2Eknzg3y7GY"
   private projectId = "PVT_kwDODE36584A2Ekn"
   private optionId = "73c98994" // id da opção "true"
 

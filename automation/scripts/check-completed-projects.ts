@@ -30,7 +30,7 @@ async function main() {
 
       const notificado = checkCompletedProjectsUseCase.getSingleSelectValue(
         card,
-        "Notificado"
+        "Notificado finalização"
       )
 
       if (!notificado || notificado === "false") {
@@ -44,11 +44,18 @@ async function main() {
           checkCompletedProjectsUseCase.getTextValue(card, "👤 Coordenador") ??
           "Coordenador"
 
-        const emailDestino =
+        // 1. Recupera campo
+        let rawEmails =
           checkCompletedProjectsUseCase.getTextValue(card, "✉️ E-mail") ?? ""
 
+        // 2. Quebra por vírgula, ponto e vírgula ou quebra de linha
+        const emails = rawEmails
+          .split(/[,;\n]/)
+          .map((e) => e.trim()) // remove espaços
+          .filter((e) => e.length > 0) // descarta itens vazios
+
         await sendCompletedEmailUseCase.execute({
-          to: [emailDestino],
+          to: emails,
           projectName,
           companyName,
           professorName,

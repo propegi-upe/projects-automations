@@ -8,7 +8,7 @@ const schema: FieldSchema = {
   Mês: { fieldName: "Edital", type: "text" },
   "Número do mês": { fieldName: "Número do mês", type: "text" },
   Trimestre: { fieldName: "Trimestre", type: "text" },
-  Status: { fieldName: "Status", type: "text" },
+  Status: { fieldName: "Status", type: "singleSelect" },
   "Valor da folha": { fieldName: "Valor da folha", type: "text" },
   Recurso: { fieldName: "Categoria do recurso", type: "text" },
   "SEI mãe": { fieldName: "SEI mãe", type: "text" },

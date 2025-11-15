@@ -20,8 +20,8 @@ const schema: FieldSchema = {
 export class IncrementOverdueUseCase {
   constructor(private projectService: ProjectsService) {}
 
-  private projectId = "PVT_kwDODE36584BGxis"
-  private statusFieldId = "PVTSSF_lADODE36584BGxiszg3uO_o"
+  private projectId = "PVT_kwDODE36584A8ZDO"
+  private statusFieldId = "PVTSSF_lADODE36584A8ZDOzgwZ5bI"
 
   async execute() {
     const grouped = await this.projectService.getGroupedTasksFromProject(

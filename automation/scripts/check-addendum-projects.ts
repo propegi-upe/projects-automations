@@ -61,11 +61,18 @@ async function main() {
         const companyName =
           checkOverdueProjectsUseCase.getTextValue(card, "🏛️ Empresa") ??
           "Empresa"
-        const emailDestino =
+          
+        let rawEmails =
           checkOverdueProjectsUseCase.getTextValue(card, "✉️ E-mail") ?? ""
 
+        // 2. Quebra por vírgula, ponto e vírgula ou quebra de linha
+        const emails = rawEmails
+          .split(/[,;\n]/)
+          .map((e) => e.trim()) // remove espaços
+          .filter((e) => e.length > 0) // descarta itens vazios
+
         await sendAddendumEmailUseCase.execute({
-          to: [emailDestino],
+          to: emails,
           projectName,
           coordinatorName,
           companyName,

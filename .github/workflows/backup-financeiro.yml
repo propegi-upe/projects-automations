@@ -22,9 +22,12 @@ jobs:
         working-directory: automation # 👉 Define o diretório padrão para os comandos
 
     steps:
-      # Etapa 1: Fazer checkout do código
+      # Etapa 1: Fazer checkout do código (com retry automático)
       - name: Checkout do repositório
         uses: actions/checkout@v3
+        retry:
+          max_attempts: 5       # tenta até 5 vezes
+          delay_seconds: 10     # espera 10s entre tentativas
         with:
           ref: main # 👉 sempre na branch backups
 

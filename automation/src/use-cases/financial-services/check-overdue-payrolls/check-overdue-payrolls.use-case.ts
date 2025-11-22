@@ -31,7 +31,7 @@ export class CheckOverduePayrollsUseCase {
 
   async execute(): Promise<void> {
     const allCards = await this.projectsService.getGroupedTasksFromProject(
-      this.projectId_test
+      this.projectId
     )
 
     for (const card of allCards) {
@@ -71,31 +71,6 @@ export class CheckOverduePayrollsUseCase {
           await this.updateStatusOfItem(card.id, rule.targetStatus)
 
           card.status = rule.targetStatus
-
-          const info = await this.projectsService.getProjectInfo(this.projectId_test)
-          console.log("INfo")
-          console.log(info)
-          const issueNodeId = card.content?.id
-          console.log("#### issue node")
-          console.log(issueNodeId)
-
-          if (!issueNodeId) {
-            console.warn("Card sem issue node_id, não é Issue ou está incompleto.")
-            continue
-          }
-
-          const realItemId = await this.projectsService.getRealProjectItemId(
-            this.projectId_test,
-            issueNodeId
-          )
-
-          console.log("real item")
-          console.log(realItemId)
-
-          const link = this.projectsService.getProjectItemLink(info.url, realItemId)
-
-          console.log("link")
-          console.log(link)
 
           if (rule.targetStatus !== "Em Atraso de OB") {
             const emails = this.getEmails(card, rule.targetStatus)
@@ -158,9 +133,9 @@ export class CheckOverduePayrollsUseCase {
     }
 
     await this.projectsService.updateFieldValue(
-      this.projectId_test,
+      this.projectId,
       itemId,
-      this.statusFieldId_test,
+      this.statusFieldId,
       optionId,
       "singleSelectOptionId"
     )

@@ -98,6 +98,24 @@ export class ProjectsService {
     return data.node
   }
 
+  async getRealProjectItemId(projectId: string, issueNodeId: string): Promise<string> {
+    const mutation = `
+      mutation($projectId: ID!, $contentId: ID!) {
+        addProjectV2ItemById(input: { projectId: $projectId, contentId: $contentId }) {
+          item {
+            id
+          }
+        }
+      }
+    `
+
+    const data = await githubRequest<any>(mutation, {
+      projectId,
+      contentId: issueNodeId,
+    })
+
+    return data.addProjectV2ItemById.item.id
+  }
 
   getProjectItemLink(projectUrl: string, itemId: string): string {
     // Extrai a base do projeto (garante que não tenha barra no final)

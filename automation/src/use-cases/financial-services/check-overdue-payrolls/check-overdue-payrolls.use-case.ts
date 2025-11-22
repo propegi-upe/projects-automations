@@ -75,14 +75,25 @@ export class CheckOverduePayrollsUseCase {
           const info = await this.projectsService.getProjectInfo(this.projectId_test)
           console.log("INfo")
           console.log(info)
-          const link = this.projectsService.getProjectItemLink(info.url, card.id)
+          const issueNodeId = card.content?.id
+          console.log("#### issue node")
+          console.log(issueNodeId)
 
-          const issueId = card.content?.number
-          console.log("number")
-          console.log(issueId)
+          if (!issueNodeId) {
+            console.warn("Card sem issue node_id, não é Issue ou está incompleto.")
+            continue
+          }
 
-          console.log("card id")
-          console.log(card.id)
+          const realItemId = await this.projectsService.getRealProjectItemId(
+            this.projectId_test,
+            issueNodeId
+          )
+
+          console.log("real item")
+          console.log(realItemId)
+
+          const link = this.projectsService.getProjectItemLink(info.url, realItemId)
+
           console.log("link")
           console.log(link)
 

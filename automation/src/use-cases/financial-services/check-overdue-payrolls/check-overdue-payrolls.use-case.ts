@@ -76,7 +76,11 @@ export class CheckOverduePayrollsUseCase {
           console.log("INfo")
           console.log(info)
           const link = this.projectsService.getProjectItemLink(info.url, card.id)
-          
+
+          const issueId = card.content?.number
+          console.log("number")
+          console.log(issueId)
+
           console.log("card id")
           console.log(card.id)
           console.log("link")

@@ -82,6 +82,32 @@ export class ProjectsService {
     return tasks
   }
 
+  async getProjectInfo(projectId: string) {
+    const query = `
+      query {
+        node(id: "${projectId}") {
+          ... on ProjectV2 {
+            title
+            url
+          }
+        }
+      }
+    `
+
+    const data = await githubRequest<any>(query)
+    return data.node
+  }
+
+
+  getProjectItemLink(projectUrl: string, itemId: string): string {
+    // Extrai a base do projeto (garante que não tenha barra no final)
+    const normalizedUrl = projectUrl.replace(/\/$/, "")
+
+    // Monta o link no padrão consistente
+    return `${normalizedUrl}/views/1?pane=issue&itemId=${itemId}`
+  }
+
+
   // Retorna o valor de um campo SingleSelect com base no nome do campo
   getSingleSelectValue(item: any, fieldName: string): string | null {
     const field = item.fieldValues.nodes.find(

@@ -73,6 +73,8 @@ export class CheckOverduePayrollsUseCase {
           card.status = rule.targetStatus
 
           const info = await this.projectsService.getProjectInfo(this.projectId_test)
+          console.log("INfo")
+          console.log(info)
           const link = this.projectsService.getProjectItemLink(info.url, card.id)
           
           console.log("card id")

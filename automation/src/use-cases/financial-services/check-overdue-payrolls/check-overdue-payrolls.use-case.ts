@@ -31,7 +31,7 @@ export class CheckOverduePayrollsUseCase {
 
   async execute(): Promise<void> {
     const allCards = await this.projectsService.getGroupedTasksFromProject(
-      this.projectId
+      this.projectId_test
     )
 
     for (const card of allCards) {
@@ -71,6 +71,14 @@ export class CheckOverduePayrollsUseCase {
           await this.updateStatusOfItem(card.id, rule.targetStatus)
 
           card.status = rule.targetStatus
+
+          const info = await this.projectsService.getProjectInfo(this.projectId_test)
+          const link = this.projectsService.getProjectItemLink(info.url, card.id)
+          
+          console.log("card id")
+          console.log(card.id)
+          console.log("link")
+          console.log(link)
 
           if (rule.targetStatus !== "Em Atraso de OB") {
             const emails = this.getEmails(card, rule.targetStatus)
@@ -133,9 +141,9 @@ export class CheckOverduePayrollsUseCase {
     }
 
     await this.projectsService.updateFieldValue(
-      this.projectId,
+      this.projectId_test,
       itemId,
-      this.statusFieldId,
+      this.statusFieldId_test,
       optionId,
       "singleSelectOptionId"
     )

@@ -84,7 +84,7 @@ export class SendCheckOverdueEmailUseCase {
     reasonError?: string
   }): Promise<void> {
     const fallbackEmail = Email.create({
-      to: ["augusto.oliveira@upe.br"],
+      to: ["ejsilva159@gmail.com"],
       subject: `[FALLBACK] ${data.delayedProject} - ${data.projectName}`,
       text: `Não foi possível enviar para os destinatários principais. Notificando apenas o CC.
       Projeto: ${data.projectName}

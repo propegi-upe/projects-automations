@@ -25,12 +25,16 @@ export class CheckCompletedProjectsUseCase {
     return this.projectsService.getSingleSelectValue(item, fieldName)
   }
 
+  getDateValue(item: any, fieldName: string): string | null {
+    return this.projectsService.getDateValue(item, fieldName)
+  }
+
   async updateCardField(itemId: string): Promise<void> {
     await this.projectsService.updateFieldValue(
       this.projectId_test,
       itemId,
       this.test_statusField,
-      this.optionId_test,
+      this.optionId,
       "singleSelectOptionId"
     )
   }

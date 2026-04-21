@@ -18,7 +18,7 @@ const getAllTasksFinancialServicesUseCase =
 // Configuração dos projetos:
 const projectsConfig = {
   "technological-development": {
-    id: "PVT_kwDODE36584A2Ekn",
+    id: "PVT_kwDODE36584A2Ekn", // PVT_kwDODE36584A64ML
     dir: "technological-development",
     useCase: getAllTasksDTProjecsUseCase,
   },

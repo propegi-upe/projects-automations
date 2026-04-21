@@ -5,8 +5,9 @@ export class CheckCompletedProjectsUseCase {
   private projectId = "PVT_kwDODE36584A2Ekn"
   private optionId = "73c98994" // id da opção "true"
 
-  private statusFieldId_test = "PVTSSF_lADODE36584A64MLzgvV8uc"
+  private statusFieldId_test = "PVTSSF_lADODE36584A64MLzgzanDA"
   private projectId_test = "PVT_kwDODE36584A64ML"
+  private optionId_test = "035ff2e8" // id da opção "true"
 
   constructor(private projectsService: ProjectsService) {}
 
@@ -31,7 +32,7 @@ export class CheckCompletedProjectsUseCase {
       this.projectId_test,
       itemId,
       this.statusFieldId_test,
-      this.optionId,
+      this.optionId_test,
       "singleSelectOptionId"
     )
   }

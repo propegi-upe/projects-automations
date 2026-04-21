@@ -34,12 +34,21 @@ async function main() {
       )
 
       const terminoRaw =
-        checkCompletedProjectsUseCase.getSingleSelectValue(card, "📅 Término") ?? ""
+        checkCompletedProjectsUseCase.getDateValue(card, "📅 Término") ?? ""
 
       console.log("Data")
       console.log(terminoRaw)
 
-      if (!notificado || notificado === "false") {
+      const terminoDate = new Date(terminoRaw)
+      const today = new Date()
+
+      const isSameDay =
+      terminoDate.getFullYear() === today.getFullYear() &&
+      terminoDate.getMonth() === today.getMonth() &&
+      terminoDate.getDate() === today.getDate()
+
+      if ((!notificado || notificado === "false") && isSameDay) {
+        console.log("Entrou aqui")
         console.log(`🔔 Projeto "${card.content?.title}" ainda não notificado.`)
 
         const projectName = card.content?.title ?? "Projeto sem título"

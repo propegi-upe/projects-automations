@@ -34,7 +34,7 @@ async function main() {
       )
 
       const terminoRaw =
-        checkCompletedProjectsUseCase.getTextValue(card, "📅 Término") ?? ""
+        checkCompletedProjectsUseCase.getSingleSelectValue(card, "📅 Término") ?? ""
 
       console.log("Data")
       console.log(terminoRaw)

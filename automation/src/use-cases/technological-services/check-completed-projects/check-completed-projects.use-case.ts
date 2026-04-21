@@ -9,6 +9,8 @@ export class CheckCompletedProjectsUseCase {
   private projectId_test = "PVT_kwDODE36584A64ML"
   private optionId_test = "035ff2e8" // id da opção "true"
 
+  private test_statusField = "PVTI_lADODE36584A64MLzgeJs94" // id da opção "true"
+
   constructor(private projectsService: ProjectsService) {}
 
   async getGroupedTasksFromProject() {
@@ -27,7 +29,7 @@ export class CheckCompletedProjectsUseCase {
     await this.projectsService.updateFieldValue(
       this.projectId_test,
       itemId,
-      this.statusFieldId_test,
+      this.test_statusField,
       this.optionId_test,
       "singleSelectOptionId"
     )

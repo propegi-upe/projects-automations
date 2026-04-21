@@ -36,6 +36,7 @@ async function main() {
       const terminoRaw =
         checkCompletedProjectsUseCase.getTextValue(card, "📅 Término") ?? ""
 
+      console.log("Data")
       console.log(terminoRaw)
 
       if (!notificado || notificado === "false") {

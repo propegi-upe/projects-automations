@@ -12,7 +12,7 @@ export class CheckCompletedProjectsUseCase {
   constructor(private projectsService: ProjectsService) {}
 
   async getGroupedTasksFromProject() {
-    return this.projectsService.getGroupedTasksFromProject(this.projectId)
+    return this.projectsService.getGroupedTasksFromProject(this.projectId_test)
   }
 
   getTextValue(item: any, fieldName: string): string | null {
@@ -25,10 +25,10 @@ export class CheckCompletedProjectsUseCase {
 
   async updateCardField(itemId: string): Promise<void> {
     await this.projectsService.updateFieldValue(
-      this.projectId,
+      this.projectId_test,
       itemId,
-      this.statusFieldId,
-      this.optionId,
+      this.statusFieldId_test,
+      this.optionId_test,
       "singleSelectOptionId"
     )
   }

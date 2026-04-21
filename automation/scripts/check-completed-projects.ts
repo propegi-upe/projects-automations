@@ -33,7 +33,10 @@ async function main() {
         "Notificado finalização"
       )
 
-      console.log(notificado)
+      const terminoRaw =
+        checkCompletedProjectsUseCase.getTextValue(card, "📅 Término") ?? ""
+
+      console.log(terminoRaw)
 
       if (!notificado || notificado === "false") {
         console.log(`🔔 Projeto "${card.content?.title}" ainda não notificado.`)

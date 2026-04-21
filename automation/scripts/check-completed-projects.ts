@@ -42,12 +42,13 @@ async function main() {
       const terminoDate = new Date(terminoRaw)
       const today = new Date()
 
-      const isSameDay =
-      terminoDate.getFullYear() === today.getFullYear() &&
-      terminoDate.getMonth() === today.getMonth() &&
-      terminoDate.getDate() === today.getDate()
+      // Zera hora/minuto/segundo das duas
+      terminoDate.setHours(0, 0, 0, 0)
+      today.setHours(0, 0, 0, 0)
 
-      if ((!notificado || notificado === "false") && isSameDay) {
+      const isDueOrPast = terminoDate <= today
+
+      if ((!notificado || notificado === "false") && isDueOrPast) {
         console.log("Entrou aqui")
         console.log(`🔔 Projeto "${card.content?.title}" ainda não notificado.`)
 

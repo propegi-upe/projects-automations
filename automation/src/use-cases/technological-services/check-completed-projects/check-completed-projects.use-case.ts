@@ -7,9 +7,6 @@ export class CheckCompletedProjectsUseCase {
 
   private statusFieldId_test = "PVTSSF_lADODE36584A64MLzgvV8uc"
   private projectId_test = "PVT_kwDODE36584A64ML"
-  private optionId_test = "035ff2e8" // id da opção "true"
-
-  private test_statusField = "PVTI_lADODE36584A64MLzgeJs94" // id da opção "true"
 
   constructor(private projectsService: ProjectsService) {}
 
@@ -33,7 +30,7 @@ export class CheckCompletedProjectsUseCase {
     await this.projectsService.updateFieldValue(
       this.projectId_test,
       itemId,
-      this.test_statusField,
+      this.statusFieldId_test,
       this.optionId,
       "singleSelectOptionId"
     )
